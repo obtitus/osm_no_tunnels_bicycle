@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"> </script>
+      <script> <!-- https://stackoverflow.com/a/8796609 -->
+	$(document).ready(function(){
+	console.log( "ready!" );
+	$("#filters :checkbox").click(function() {
+	    //$("tr").hide();
+	    $("tr[type='data']").hide();
+	    $("#filters :checkbox:checked").each(function() {
+		$("." + $(this).val()).show();
+	    });
+	});
+	})
+    </script>
+
+
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="DESCRIPTION">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Tunnels in Norway to OSM</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/obtitus/osm_no_tunnels_bicycle">View on GitHub</a>
+
+          <h1 id="project_title">Tunnels in Norway to OSM</h1>
+          <h2 id="project_tagline">Tunnels in Norway to OSM: Improving bicycle related tags for Norwegian tunnels</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/obtitus/osm_no_tunnels_bicycle/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/obtitus/osm_no_tunnels_bicycle/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="osm_no_tunnels_bicycle" class="anchor" href="#osm_no_tunnels_bicycle" aria-hidden="true"><span class="octicon octicon-link"></span></a>index</h1>
+
+	<p>View a comparison of vegvesen.no and openstreetmap.org: <a href="vegvesen_vs_osm.html"
+title="Comparing vegvesen.no and openstreetmap.org tunnel data">here</a></p>
+<p>View a comparison of cycletourer.co.uk and openstreetmap.org: <a href="cycletourer_vs_osm.html"
+title="Comparing cycletourer.co.uk and openstreetmap.org tunnel data">here</a></p>
+<p>View a comparison of cycletourer.co.uk and vegvesen.no: <a href="vegvesen_cycletourer.html"
+title="Comparing vegvesen and cycletourer.co.uk tunnel data">here</a></p>
+<p>The raw data can be found in the following files:</p><p><a href="openstreetmap_simplified.osm"
+title="openstreetmap_simplified.osm">openstreetmap_simplified.osm</a></p>
+<p><a href="openstreetmap_raw.osm"
+title="openstreetmap_raw.osm">openstreetmap_raw.osm</a></p>
+<p><a href="cycletourer_simplified.osm"
+title="cycletourer_simplified.osm">cycletourer_simplified.osm</a></p>
+<p><a href="cycletourer_raw.json"
+title="cycletourer_raw.json">cycletourer_raw.json</a></p>
+<p><a href="vegvesen_simplified.osm"
+title="vegvesen_simplified.osm">vegvesen_simplified.osm</a></p>
+<p><a href="vegvesen_raw.json"
+title="vegvesen_raw.json">vegvesen_raw.json</a></p>
+<p>For additional vegvesen data, please go to <a href="https://www.vegvesen.no/vegkart/vegkart/#kartlag:geodata/hva:(~(id:67,filter:(~),farge:'1_1),(id:581,filter:(~),farge:'2_0))/@600000,7225000,3"
+title="Søk etter tunneløp og tunneler på vegvesen.no">vegvesen.no/vegkart</a></p>
+
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">This page is maintained by <a href="https://github.com/obtitus">obtitus</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+        <p class="copyright">Map data &copy;<a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a></p>
+	<p class="copyright">Cycletourer website&copy;<a href="http://www.cycletourer.co.uk">cycletourer.co.uk</a></p>
+	<p class="copyright">Statens vegvesen&copy;<a href="https://data.norge.no/nlod/no/1.0">NLOD</a></p>
+      </footer>
+    </div>
+
+          <!--     <script type="text/javascript"> -->
+          <!--   var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); -->
+          <!--   document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); -->
+          <!-- </script> -->
+          <!-- <script type="text/javascript"> -->
+          <!--   try { -->
+          <!--     var pageTracker = _gat._getTracker("UA-2401814-5"); -->
+          <!--   pageTracker._trackPageview(); -->
+          <!--   } catch(err) {} -->
+          <!-- </script> -->
+
+
+  </body>
+</html>

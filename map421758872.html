@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+    
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="DESCRIPTION">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    
+    <style type="text/css">
+      .gpx { border: 2px #aaa solid; border-radius: 5px;
+        box-shadow: 0 0 3px 3px #ccc;
+        width: max-width; margin: 1em auto; }
+      .gpx header { padding: 0.5em; }
+      .gpx h3 { margin: 0; padding: 0; font-weight: bold; }
+      .gpx .start { font-size: smaller; color: #444; }
+      .gpx .map { border: 1px #888 solid; border-left: none; border-right: none;
+        width: max-width; height: 500px; margin: 0; }
+      .gpx footer { background: #f0f0f0; padding: 0.5em; }
+      .gpx ul.info { list-style: none; margin: 0; padding: 0; font-size: smaller; }
+      .gpx ul.info li { color: #666; padding: 2px; display: inline; }
+      .gpx ul.info li span { color: black; }
+    </style>
+
+    <title>Tunnels in Norway to OSM</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/obtitus/osm_no_tunnels_bicycle">View on GitHub</a>
+
+          <h1 id="project_title">Tunnels in Norway to OSM</h1>
+          <h2 id="project_tagline">Tunnels in Norway to OSM: Improving bicycle related tags for Norwegian tunnels</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/obtitus/osm_no_tunnels_bicycle/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/obtitus/osm_no_tunnels_bicycle/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+	  <a id="osm_no_tunnels_bicycle" class="anchor" href="#osm_no_tunnels_bicycle" aria-hidden="true"><span class="octicon octicon-link"></span></a>Map of  827</h1>
+	
+	Showing 2 auto-routed bicycle routes (using <a href="https://github.com/graphhopper/graphhopper"
+title="graphhoppers github page">graphhopper</a>) between the two ends of the tunnel. Download
+                gpx file: <a href="map421758872.gpx"
+title="gpx fil">map421758872.gpx</a>. Openstreetmap tags:
+                <pre>highway = primary
+ref = 827
+</pre>
+                
+	
+	<section id="demo" class="gpx" data-gpx-source="map421758872.gpx" data-map-target="demo-map">
+	  <header>
+            <h3>Loading...</h3>
+            <span class="start"></span>
+	  </header>
+	  
+	  <article>
+            <div class="map" id="demo-map"></div>
+	  </article>
+	  
+	</section>
+    </div>
+
+    
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">This page is maintained by <a href="https://github.com/obtitus">obtitus</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+        <p class="copyright">Map data &copy;<a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a></p>
+	<p class="copyright">Cycletourer website&copy;<a href="http://www.cycletourer.co.uk">cycletourer.co.uk</a></p>
+	<p class="copyright">Statens vegvesen&copy;<a href="https://data.norge.no/nlod/no/1.0">NLOD</a></p>
+      </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+    <script src="https://rawgithub.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
+    <script type="application/javascript">
+      function display_gpx(elt) {
+        if (!elt) return;
+
+        var url = elt.getAttribute('data-gpx-source');
+        var mapid = elt.getAttribute('data-map-target');
+        if (!url || !mapid) return;
+
+        function _t(t) { return elt.getElementsByTagName(t)[0]; }
+        function _c(c) { return elt.getElementsByClassName(c)[0]; }
+
+        // var map = L.map(mapid);
+        // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //   attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>'
+        // }).addTo(map);
+	var map = L.map(mapid);
+          L.tileLayer('https://api.mapbox.com/styles/v1/obtitus/cj58m4n684gi12rrm5km4ykyk/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoib2J0aXR1cyIsImEiOiJjaWYzbXF1M3IwMGtuc3ZsdmhhYXR4d2hpIn0.tQQLwWt3e_NhGtTdUYLzwQ', {
+		      attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">Mapbox</a> <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+        }).addTo(map);
+
+        var control = L.control.layers(null, null).addTo(map);
+
+        new L.GPX(url, {
+          async: true,
+          marker_options: {
+            startIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png',
+            endIconUrl:   'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-end.png',
+            shadowUrl:    'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-shadow.png',
+          },
+        }).on('loaded', function(e) {
+          var gpx = e.target;
+          map.fitBounds(gpx.getBounds());
+          control.addOverlay(gpx, gpx.get_name());
+
+          /*
+           * Note: the code below relies on the fact that the demo GPX file is
+           * an actual GPS track with timing and heartrate information.
+           */
+          _t('h3').textContent = gpx.get_name();
+        }).addTo(map);
+      }
+
+      display_gpx(document.getElementById('demo'));
+    </script>
+    
+          <!--     <script type="text/javascript"> -->
+          <!--   var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); -->
+          <!--   document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); -->
+          <!-- </script> -->
+          <!-- <script type="text/javascript"> -->
+          <!--   try { -->
+          <!--     var pageTracker = _gat._getTracker("UA-2401814-5"); -->
+          <!--   pageTracker._trackPageview(); -->
+          <!--   } catch(err) {} -->
+          <!-- </script> -->
+
+
+  </body>
+</html>

@@ -1,14 +1,3 @@
-cover_packages="--cover-package=."
-
-test:
-	nosetests --with-doctest . -v \
-		--with-coverage --cover-inclusive --cover-erase --cover-package=. --cover-tests --cover-html
-
-# fixme:
-#--with-profile --profile-stats-file=cover/profile.stats
-
-doctest:
-	python -m doctest -v *.py
-
-unittest:
-	python -m unittest discover
+push_test_to_cakebox:
+	rsync --progress leaflet-gpx-demo.html demo.gpx map185270616.gpx map185270616.html map27232275.html map27232275.gpx ob.cakebox.net:public_html/leaflet-test/
+	rsync --progress -r stylesheets javascripts images ob.cakebox.net:public_html/leaflet-test/
