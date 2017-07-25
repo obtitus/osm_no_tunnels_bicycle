@@ -1,0 +1,59 @@
+<!-- The following was generated in http://overpass-turbo.eu/# -->
+<!-- by tunnel=* -->
+<!-- FIXME: do we need covered=* as well? -->
+<!-- FIXME: maybe a whitelist would be better...-->
+<!-- It was then exported by "Export -> Query -> convert to Overpass-XML" and modified-->
+
+<osm-script output="xml" output-config="" timeout="300">
+  {variables_query}
+  <union into="_">
+    <query into="_" type="node">
+      <has-kv k="tunnel" modv="" v=""/>
+      <has-kv k="highway" modv="" v=""/>
+      <has-kv k="highway" modv="not" v="service"/> 
+      <has-kv k="highway" modv="not" v="construction"/>
+      <has-kv k="highway" modv="not" v="proposed"/>
+      <has-kv k="highway" modv="not" v="footway"/>
+      <has-kv k="highway" modv="not" v="cycleway"/>
+      <has-kv k="highway" modv="not" v="steps"/>
+      <has-kv k="highway" modv="not" v="bus_stop"/>      
+      <has-kv k="highway" modv="not" v="pedestrian"/>
+      <has-kv k="highway" modv="not" v="path"/>
+      <has-kv k="access" modv="not" v="no"/>
+      {area_query}
+    </query>
+    <query into="_" type="way">
+      <has-kv k="tunnel" modv="" v=""/>
+      <has-kv k="highway" modv="" v=""/>
+      <has-kv k="highway" modv="not" v="service"/>       
+      <has-kv k="highway" modv="not" v="construction"/>
+      <has-kv k="highway" modv="not" v="proposed"/>
+      <has-kv k="highway" modv="not" v="footway"/>
+      <has-kv k="highway" modv="not" v="cycleway"/>
+      <has-kv k="highway" modv="not" v="steps"/>
+      <has-kv k="highway" modv="not" v="bus_stop"/>      
+      <has-kv k="highway" modv="not" v="pedestrian"/>
+      <has-kv k="highway" modv="not" v="path"/>
+      <has-kv k="access" modv="not" v="no"/>      
+      {area_query}
+    </query>
+    <query into="_" type="relation">
+      <has-kv k="tunnel" modv="" v=""/>
+      <has-kv k="highway" modv="" v=""/>
+      <has-kv k="highway" modv="not" v="service"/>       
+      <has-kv k="highway" modv="not" v="construction"/>
+      <has-kv k="highway" modv="not" v="proposed"/>
+      <has-kv k="highway" modv="not" v="footway"/>
+      <has-kv k="highway" modv="not" v="cycleway"/>
+      <has-kv k="highway" modv="not" v="steps"/>
+      <has-kv k="highway" modv="not" v="bus_stop"/>      
+      <has-kv k="highway" modv="not" v="pedestrian"/>
+      <has-kv k="highway" modv="not" v="path"/>
+      <has-kv k="access" modv="not" v="no"/>
+      {area_query}
+    </query>
+  </union>
+  <print e="" from="_" geometry="skeleton" limit="" mode="meta" n="" order="id" s="" w=""/>
+  <recurse from="_" into="_" type="down"/>
+  <print e="" from="_" geometry="skeleton" limit="" mode="meta" n="" order="quadtile" s="" w=""/>
+</osm-script>
