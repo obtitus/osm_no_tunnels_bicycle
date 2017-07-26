@@ -125,6 +125,21 @@ footer a {
   text-decoration: underline;
 }
 
+/* fixme: there is probably a cleaner way of implementing these two styles */
+.comparison_link {
+  padding: 10px 10px 10px 10px;
+  color: #fff;
+  background: #0090ff;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(0,0,0,.5);
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.comparison_p {
+  padding: 10px 10px 10px 10px;
+}
+
 em {
   font-style: italic;
 }
@@ -299,7 +314,7 @@ Full-Width Styles
 
 .inner {
   position: relative;
-  max-width: 1024px;/*640px;*/
+  max-width: 2048px;/*640px;*/
   padding: 20px 10px;
   margin: 0 auto;
 }
@@ -328,6 +343,8 @@ Full-Width Styles
   background: linear-gradient(top, #373737, #212121);
   background-image: url('../images/tunnel.svg'), none;
   background-repeat: no-repeat;
+  background-position: center center
+  background-size:contain;
 }
 
 #header_wrap .inner {
