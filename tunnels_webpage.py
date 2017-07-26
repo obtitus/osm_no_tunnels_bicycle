@@ -427,7 +427,7 @@ def main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple, filenames_to_li
         filenames_to_link = []
     kwargs['root'] = root
 
-    info = '<p>Pick a compararison page below:</p>\n'
+    info = '<p>Pick a comparison page below:</p>\n'
     filename = 'vegvesen_vs_osm.html'
     title = 'Comparing vegvesen.no and openstreetmap.org tunnel data'
     mode = 'vegvesen'
