@@ -3,7 +3,7 @@
 
 # Standard python imports
 import os
-from copy import deepcopy
+import glob
 from collections import defaultdict
 from copy import deepcopy
 
@@ -32,6 +32,7 @@ import util
 import tunnels_graphhopper
 
 link_template = u'<a href="{href}"\ntitle="{title}">{text}</a>'
+link_template_comparison = u'<a class="comparison_link" href="{href}"\ntitle="{title}">{text}</a>'
 graphhopper_url = link_template.format(href='https://github.com/graphhopper/graphhopper',
                                        title='graphhoppers github page', text='graphhopper')
 
@@ -171,26 +172,28 @@ def match(osm1, osm2):
     logger.info('Found %s exact name matches and %s unmatched items' % (len(match_lists), len(unmatched_list)))
     return match_lists, unmatched_list
 
+def add_to_category(item, value):
+    item = deepcopy(item)
+    if 'category' in item.tags:
+        item.tags['category'] += ' ' + value
+    else:
+        item.tags['category'] = value
+    return item
+
 def flatten(matched_dict, unmatched_list):
     ret = list()
     categories = set()
     for key in matched_dict:
         for item in matched_dict[key]:
-            if 'category' in item.tags:
-                item.tags['category'] += ' matched'
-            else:
-                item.tags['category'] = 'matched'
-
+            item = add_to_category(item, 'matched')
+            
             categories = categories.union(item.tags['category'].split())
             
             ret.append(item)
 
     for item in unmatched_list:
-        if 'category' in item.tags:
-            item.tags['category'] += ' unmatched'
-        else:
-            item.tags['category'] = 'unmatched'
-
+        item = add_to_category(item, 'unmatched')
+            
         categories = categories.union(item.tags['category'].split())
             
         ret.append(item)
@@ -205,15 +208,11 @@ def diff(matched_dict):
         bicycle1 = match_list[0].tags.get('bicycle', '')
         bicycle2 = match_list[1].tags.get('bicycle', '')
         if bicycle1 != '' and bicycle2 != '' and bicycle1 != bicycle2:
+            for item_ix in xrange(len(match_list)):
+                match_list[item_ix] = add_to_category(match_list[item_ix], 'matched_diff') # important: makes a copy!
+
             match_list[0].tags['bicycle'] = my_htmldiff(bicycle2, bicycle1)
             match_list[1].tags['bicycle'] = my_htmldiff(bicycle1, bicycle2)
-
-            for item in match_list:
-                if 'category' in item.tags:
-                    item.tags['category'] += ' matched_diff'
-                else:
-                    item.tags['category'] = 'matched_diff'
-
 
     return matched_dict
         
@@ -369,6 +368,7 @@ def simplify_name_key(osm):
 def main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root='.', 
          mode='vegvesen',
          heading='Comparing vegvesen and openstreetmap.org tunnel data',
+         delete_old=False,
          output_html_name='table.html'):
 
      # HACK
@@ -389,14 +389,13 @@ def main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root='.',
     keys = get_all_keys(vegvesen_cycletourer)
     keys = sort_keys(keys)
 
-    # # delete old tunnel-map pages
-    # import glob
-    # for f in glob.glob(os.path.join(root, 'output', 'map*.html')):
-    #     os.remove(f)
-    # # delete old gpx traces
-    # import glob
-    # for f in glob.glob(os.path.join(root, 'output', 'map*.gpx')):
-    #     os.remove(f)
+    # if delete_old:
+    #     # delete old tunnel-map pages
+    #     for f in glob.glob(os.path.join(root, 'output', 'map*.html')):
+    #         os.remove(f)
+    #     # delete old gpx traces
+    #     for f in glob.glob(os.path.join(root, 'output', 'map*.gpx')):
+    #         os.remove(f)
     
     # table
     table_header = keys
@@ -428,32 +427,32 @@ def main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple, filenames_to_li
         filenames_to_link = []
     kwargs['root'] = root
 
-    info = ''
+    info = '<p>Pick a compararison page below:</p>\n'
     filename = 'vegvesen_vs_osm.html'
     title = 'Comparing vegvesen.no and openstreetmap.org tunnel data'
     mode = 'vegvesen'
-    main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, 
+    main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, delete_old=True,
          mode=mode, heading = title, output_html_name=filename, **kwargs)
-    info += '<p>View a comparison of vegvesen.no and openstreetmap.org: %s</p>\n' % link_template.format(href=filename,
-                                                                                                        title=title,
-                                                                                                        text='here')
+    info += '<p class="comparison_p">%s</p>\n' % link_template_comparison.format(href=filename,
+                                                 title=title,
+                                                 text='vegvesen.no VS openstreetmap.org')
     filename = 'cycletourer_vs_osm.html'
     title = 'Comparing cycletourer.co.uk and openstreetmap.org tunnel data'
     mode = 'cycletourer'
     main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, 
          mode=mode, heading = title, output_html_name=filename, **kwargs)
-    info += '<p>View a comparison of cycletourer.co.uk and openstreetmap.org: %s</p>\n' % link_template.format(href=filename,
-                                                                                                        title=title,
-                                                                                                        text='here')
+    info += '<p class="comparison_p">%s</p>\n' % link_template_comparison.format(href=filename,
+                                                 title=title,
+                                                 text='cycletourer.co.uk VS openstreetmap.org')
 
     filename = 'vegvesen_cycletourer.html'
     title = 'Comparing vegvesen and cycletourer.co.uk tunnel data'
     mode = 'vegvesen_cycletourer'
     main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, 
          mode=mode, heading = title, output_html_name=filename, **kwargs)
-    info += '<p>View a comparison of cycletourer.co.uk and vegvesen.no: %s</p>\n' % link_template.format(href=filename,
-                                                                                                        title=title,
-                                                                                                        text='here')
+    info += '<p class="comparison_p">%s</p>\n' % link_template_comparison.format(href=filename,
+                                                 title=title,
+                                                 text='vegvesen.no VS cycletourer.co.uk')
     # main page
     template_index = os.path.join(root, 'template', 'index.html')
     output_index = os.path.join(root, 'output', 'index.html')
@@ -473,4 +472,4 @@ def main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple, filenames_to_li
                                                                                           text='vegvesen.no/vegkart')
     write_template(template_index, output_index, 
                    info=info,
-                   heading='index')
+                   heading='Index')

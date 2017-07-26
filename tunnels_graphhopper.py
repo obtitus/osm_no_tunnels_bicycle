@@ -56,7 +56,7 @@ def track_equality(track1, track2):
     return True
 
 def merge_gpx(gpx1, gpx2):
-    # append tracks from gpx2 into gpx1 if they are unique
+    # append tracks from gpx2 into gpx1 if they are unique, inplace!
     for track2 in gpx2.tracks:
         for track1 in gpx1.tracks:
             if track_equality(track1, track2):
@@ -65,28 +65,6 @@ def merge_gpx(gpx1, gpx2):
             logger.info('Adding track %s', track2)
             gpx1.tracks.append(track2)
     
-    # print len(gpx.tracks)
-    # gpx.tracks.append(gpx.tracks[0])
-
-        
-    # soup = BeautifulSoup(xml, 'lxml')
-    
-    # #soup.select('trk')
-    # track = soup.find_all('trk')
-    # #print type(track)
-    # print len(track)
-    # #soup.select('trk').extend(track)
-    # gpx = soup.html.body
-    # #gpx.append(soup.new_tag(track[0]))
-    # tag = soup.new_tag('trk2')
-    # a = BeautifulSoup(str(track[0]), 'lxml')
-    # tag.append(a)
-    # # #tag.string = str(track[0])
-    # # soup.html.body.gpx.append(tag)
-    # print soup.prettify()
-    
-    # exit(1)
-
 def get_all(start, end, gpx=None):
     for weighting in ('fastest', 'shortest'):
         for vehicle in ('bike', 'bike2', 'mtb', 'racingbike'):
