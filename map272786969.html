@@ -3,14 +3,15 @@
 
   <head>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+    <link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
     
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="DESCRIPTION">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-    
+
     <style type="text/css">
       .gpx { border: 2px #aaa solid; border-radius: 5px;
         box-shadow: 0 0 3px 3px #ccc;
@@ -54,14 +55,14 @@
 	
 	Showing 4 auto-routed bicycle routes (using <a href="https://github.com/graphhopper/graphhopper"
 title="graphhoppers github page">graphhopper</a>) between the two ends of the tunnel. Download
-                gpx file: <a href="map272786969.gpx"
+                    gpx file: <a href="map272786969.gpx"
 title="gpx fil">map272786969.gpx</a>. Openstreetmap tags:
-                <pre>highway = primary
+                    <pre>highway = primary
 lit = yes
 name = Hansagjeltunnelen
 ref = 7
 </pre>
-                
+                    
 	
 	<section id="demo" class="gpx" data-gpx-source="map272786969.gpx" data-map-target="demo-map">
 	  <header>
@@ -88,52 +89,515 @@ ref = 7
       </footer>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
-    <script src="https://rawgithub.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
-    <script type="application/javascript">
-      function display_gpx(elt) {
-        if (!elt) return;
+    <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js"></script>
 
+<script>
+    function display_gpx(elt) {
+        if (!elt) return;
+	
         var url = elt.getAttribute('data-gpx-source');
         var mapid = elt.getAttribute('data-map-target');
         if (!url || !mapid) return;
-
+	
         function _t(t) { return elt.getElementsByTagName(t)[0]; }
         function _c(c) { return elt.getElementsByClassName(c)[0]; }
 
-        // var map = L.map(mapid);
-        // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //   attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>'
-        // }).addTo(map);
-	var map = L.map(mapid);
-          L.tileLayer('https://api.mapbox.com/styles/v1/obtitus/cj58m4n684gi12rrm5km4ykyk/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoib2J0aXR1cyIsImEiOiJjaWYzbXF1M3IwMGtuc3ZsdmhhYXR4d2hpIn0.tQQLwWt3e_NhGtTdUYLzwQ', {
-		      attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">Mapbox</a> <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
-        }).addTo(map);
+	console.log("loading map");
+	mapboxgl.accessToken = 'pk.eyJ1Ijoib2J0aXR1cyIsImEiOiJjaWYzbXF1M3IwMGtuc3ZsdmhhYXR4d2hpIn0.tQQLwWt3e_NhGtTdUYLzwQ';
+	var map = new mapboxgl.Map({
+	    container: mapid,
+	    style: 'mapbox://styles/obtitus/cj58m4n684gi12rrm5km4ykyk',
+	    center: [20, 65],
+	    zoom: 5
+	});
 
-        var control = L.control.layers(null, null).addTo(map);
-
-        new L.GPX(url, {
-          async: true,
-          marker_options: {
-            startIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png',
-            endIconUrl:   'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-end.png',
-            shadowUrl:    'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-shadow.png',
-          },
-        }).on('loaded', function(e) {
-          var gpx = e.target;
-          map.fitBounds(gpx.getBounds());
-          control.addOverlay(gpx, gpx.get_name());
-
-          /*
-           * Note: the code below relies on the fact that the demo GPX file is
-           * an actual GPS track with timing and heartrate information.
-           */
-          _t('h3').textContent = gpx.get_name();
-        }).addTo(map);
+	var data = {
+    "features": [
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        6.040249,
+                        60.367318
+                    ],
+                    [
+                        6.040269,
+                        60.367418
+                    ],
+                    [
+                        6.040317,
+                        60.367505
+                    ],
+                    [
+                        6.040081,
+                        60.367417
+                    ],
+                    [
+                        6.039951,
+                        60.367328
+                    ],
+                    [
+                        6.039859,
+                        60.367229
+                    ],
+                    [
+                        6.039838,
+                        60.367126
+                    ],
+                    [
+                        6.039878,
+                        60.367043
+                    ],
+                    [
+                        6.04015,
+                        60.366835
+                    ],
+                    [
+                        6.040949,
+                        60.366553
+                    ],
+                    [
+                        6.041828,
+                        60.366098
+                    ],
+                    [
+                        6.042356,
+                        60.365452
+                    ],
+                    [
+                        6.042608,
+                        60.365098
+                    ],
+                    [
+                        6.042983,
+                        60.364734
+                    ],
+                    [
+                        6.043104,
+                        60.364673
+                    ],
+                    [
+                        6.043672,
+                        60.364512
+                    ],
+                    [
+                        6.043762,
+                        60.364464
+                    ],
+                    [
+                        6.043894,
+                        60.364185
+                    ],
+                    [
+                        6.043902,
+                        60.364078
+                    ],
+                    [
+                        6.043785,
+                        60.363708
+                    ],
+                    [
+                        6.043811,
+                        60.363621
+                    ],
+                    [
+                        6.044703,
+                        60.36284
+                    ],
+                    [
+                        6.044856,
+                        60.362764
+                    ],
+                    [
+                        6.045032,
+                        60.362727
+                    ],
+                    [
+                        6.045213,
+                        60.362712
+                    ],
+                    [
+                        6.045462,
+                        60.362729
+                    ],
+                    [
+                        6.046024,
+                        60.36284
+                    ],
+                    [
+                        6.046509,
+                        60.362989
+                    ],
+                    [
+                        6.046673,
+                        60.363033
+                    ],
+                    [
+                        6.046897,
+                        60.363066
+                    ],
+                    [
+                        6.047001,
+                        60.363106
+                    ],
+                    [
+                        6.047038,
+                        60.363155
+                    ],
+                    [
+                        6.046815,
+                        60.363143
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        6.040249,
+                        60.367318
+                    ],
+                    [
+                        6.040286,
+                        60.367185
+                    ],
+                    [
+                        6.0404,
+                        60.367062
+                    ],
+                    [
+                        6.040616,
+                        60.366927
+                    ],
+                    [
+                        6.042574,
+                        60.365965
+                    ],
+                    [
+                        6.042996,
+                        60.365721
+                    ],
+                    [
+                        6.043311,
+                        60.365482
+                    ],
+                    [
+                        6.04361,
+                        60.365112
+                    ],
+                    [
+                        6.044339,
+                        60.364288
+                    ],
+                    [
+                        6.044715,
+                        60.363934
+                    ],
+                    [
+                        6.045069,
+                        60.363657
+                    ],
+                    [
+                        6.04544,
+                        60.363434
+                    ],
+                    [
+                        6.045945,
+                        60.363242
+                    ],
+                    [
+                        6.046385,
+                        60.363168
+                    ],
+                    [
+                        6.046815,
+                        60.363143
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        6.046815,
+                        60.363143
+                    ],
+                    [
+                        6.047038,
+                        60.363155
+                    ],
+                    [
+                        6.047001,
+                        60.363106
+                    ],
+                    [
+                        6.046897,
+                        60.363066
+                    ],
+                    [
+                        6.046673,
+                        60.363033
+                    ],
+                    [
+                        6.046024,
+                        60.36284
+                    ],
+                    [
+                        6.045462,
+                        60.362729
+                    ],
+                    [
+                        6.045213,
+                        60.362712
+                    ],
+                    [
+                        6.045032,
+                        60.362727
+                    ],
+                    [
+                        6.044856,
+                        60.362764
+                    ],
+                    [
+                        6.044703,
+                        60.36284
+                    ],
+                    [
+                        6.043811,
+                        60.363621
+                    ],
+                    [
+                        6.043785,
+                        60.363708
+                    ],
+                    [
+                        6.043902,
+                        60.364078
+                    ],
+                    [
+                        6.043894,
+                        60.364185
+                    ],
+                    [
+                        6.043762,
+                        60.364464
+                    ],
+                    [
+                        6.043672,
+                        60.364512
+                    ],
+                    [
+                        6.043104,
+                        60.364673
+                    ],
+                    [
+                        6.042983,
+                        60.364734
+                    ],
+                    [
+                        6.042608,
+                        60.365098
+                    ],
+                    [
+                        6.042356,
+                        60.365452
+                    ],
+                    [
+                        6.041828,
+                        60.366098
+                    ],
+                    [
+                        6.040949,
+                        60.366553
+                    ],
+                    [
+                        6.04015,
+                        60.366835
+                    ],
+                    [
+                        6.039981,
+                        60.36695
+                    ],
+                    [
+                        6.039878,
+                        60.367043
+                    ],
+                    [
+                        6.039838,
+                        60.367126
+                    ],
+                    [
+                        6.039859,
+                        60.367229
+                    ],
+                    [
+                        6.039951,
+                        60.367328
+                    ],
+                    [
+                        6.040081,
+                        60.367417
+                    ],
+                    [
+                        6.040317,
+                        60.367505
+                    ],
+                    [
+                        6.040269,
+                        60.367418
+                    ],
+                    [
+                        6.040249,
+                        60.367318
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        6.046815,
+                        60.363143
+                    ],
+                    [
+                        6.046385,
+                        60.363168
+                    ],
+                    [
+                        6.045945,
+                        60.363242
+                    ],
+                    [
+                        6.04544,
+                        60.363434
+                    ],
+                    [
+                        6.045069,
+                        60.363657
+                    ],
+                    [
+                        6.044715,
+                        60.363934
+                    ],
+                    [
+                        6.044339,
+                        60.364288
+                    ],
+                    [
+                        6.04361,
+                        60.365112
+                    ],
+                    [
+                        6.043311,
+                        60.365482
+                    ],
+                    [
+                        6.042996,
+                        60.365721
+                    ],
+                    [
+                        6.042574,
+                        60.365965
+                    ],
+                    [
+                        6.040616,
+                        60.366927
+                    ],
+                    [
+                        6.0404,
+                        60.367062
+                    ],
+                    [
+                        6.040286,
+                        60.367185
+                    ],
+                    [
+                        6.040249,
+                        60.367318
+                    ],
+                    [
+                        6.040249,
+                        60.367318
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        }
+    ],
+    "type": "FeatureCollection"
+};
+	map.on("load", function() {
+	    console.log("map loaded")
+	    map.addSource("gpx-tracks",
+			  {"type": "geojson",
+			   "data":data
+			  });
+	    map.addLayer({
+		"id": "gpx-layer",
+		"source": "gpx-tracks",
+		"type": "line",
+		"layout": {"line-join": "round",
+			   "line-cap": "round"},
+		"paint": {"line-color": "#1515EE",
+			  "line-width": 3,
+			  "line-opacity":0.25,
+			  "line-offset":1}
+	    });
+	    
+	    var layer = L.geoJson(data);
+	    // get bounds, and re-format to a mapbox friendly format:
+	    var bounds = layer.getBounds();
+	    var northEast = [bounds['_northEast']['lng'], bounds['_northEast']['lat']]
+	    var southWest = [bounds['_southWest']['lng'], bounds['_southWest']['lat']]
+	    map.fitBounds([southWest, northEast]);
+            _t('h3').textContent = "";
+	});
+	
+	map.on('click', function(e) {
+	    var features = map.queryRenderedFeatures(e.point, {
+		layers: ['cycletourer-simplified-dstse3-bicycle-no', 'cycletourer-simplified-dstse3-bicycle-yes',
+			 'cycletourer-simplified-dstse3-bicycle-white', 'cycletourer-simplified-dstse3-bicycle-yellow',
+			 'vegvesen-simplified-3pt3m7-no', 'vegvesen-simplified-3pt3m7-yes',
+			 'vegvesen-simplified-3pt3m7-white']
+	    });
+	    
+	    if (!features.length) {
+		return;
+	    }
+	    
+	    var feature = features[0];
+	    var html = "<pre>";
+	    for (var key in feature.properties) {
+		html += key + " = " + feature.properties[key] + "\n";
+	    }
+	    html += "</pre>";
+	    
+	    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+		.setLngLat(feature.geometry.coordinates)
+		.setHTML(html)
+		.setLngLat(feature.geometry.coordinates)
+		.addTo(map);
+	});
       }
 
       display_gpx(document.getElementById('demo'));
     </script>
+
     
           <!--     <script type="text/javascript"> -->
           <!--   var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); -->

@@ -3,14 +3,15 @@
 
   <head>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+    <link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
     
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="DESCRIPTION">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-    
+
     <style type="text/css">
       .gpx { border: 2px #aaa solid; border-radius: 5px;
         box-shadow: 0 0 3px 3px #ccc;
@@ -54,13 +55,13 @@
 	
 	Showing 2 auto-routed bicycle routes (using <a href="https://github.com/graphhopper/graphhopper"
 title="graphhoppers github page">graphhopper</a>) between the two ends of the tunnel. Download
-                gpx file: <a href="map33724018.gpx"
+                    gpx file: <a href="map33724018.gpx"
 title="gpx fil">map33724018.gpx</a>. Openstreetmap tags:
-                <pre>highway = primary
+                    <pre>highway = primary
 name = Overåtunnelen
 ref = 650
 </pre>
-                
+                    
 	
 	<section id="demo" class="gpx" data-gpx-source="map33724018.gpx" data-map-target="demo-map">
 	  <header>
@@ -87,52 +88,309 @@ ref = 650
       </footer>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
-    <script src="https://rawgithub.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
-    <script type="application/javascript">
-      function display_gpx(elt) {
-        if (!elt) return;
+    <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js"></script>
 
+<script>
+    function display_gpx(elt) {
+        if (!elt) return;
+	
         var url = elt.getAttribute('data-gpx-source');
         var mapid = elt.getAttribute('data-map-target');
         if (!url || !mapid) return;
-
+	
         function _t(t) { return elt.getElementsByTagName(t)[0]; }
         function _c(c) { return elt.getElementsByClassName(c)[0]; }
 
-        // var map = L.map(mapid);
-        // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //   attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>'
-        // }).addTo(map);
-	var map = L.map(mapid);
-          L.tileLayer('https://api.mapbox.com/styles/v1/obtitus/cj58m4n684gi12rrm5km4ykyk/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoib2J0aXR1cyIsImEiOiJjaWYzbXF1M3IwMGtuc3ZsdmhhYXR4d2hpIn0.tQQLwWt3e_NhGtTdUYLzwQ', {
-		      attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">Mapbox</a> <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
-        }).addTo(map);
+	console.log("loading map");
+	mapboxgl.accessToken = 'pk.eyJ1Ijoib2J0aXR1cyIsImEiOiJjaWYzbXF1M3IwMGtuc3ZsdmhhYXR4d2hpIn0.tQQLwWt3e_NhGtTdUYLzwQ';
+	var map = new mapboxgl.Map({
+	    container: mapid,
+	    style: 'mapbox://styles/obtitus/cj58m4n684gi12rrm5km4ykyk',
+	    center: [20, 65],
+	    zoom: 5
+	});
 
-        var control = L.control.layers(null, null).addTo(map);
-
-        new L.GPX(url, {
-          async: true,
-          marker_options: {
-            startIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png',
-            endIconUrl:   'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-end.png',
-            shadowUrl:    'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-shadow.png',
-          },
-        }).on('loaded', function(e) {
-          var gpx = e.target;
-          map.fitBounds(gpx.getBounds());
-          control.addOverlay(gpx, gpx.get_name());
-
-          /*
-           * Note: the code below relies on the fact that the demo GPX file is
-           * an actual GPS track with timing and heartrate information.
-           */
-          _t('h3').textContent = gpx.get_name();
-        }).addTo(map);
+	var data = {
+    "features": [
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        7.139547,
+                        62.296871
+                    ],
+                    [
+                        7.138691,
+                        62.296902
+                    ],
+                    [
+                        7.138238,
+                        62.296948
+                    ],
+                    [
+                        7.13768,
+                        62.297032
+                    ],
+                    [
+                        7.137173,
+                        62.297137
+                    ],
+                    [
+                        7.136451,
+                        62.297308
+                    ],
+                    [
+                        7.126651,
+                        62.29987
+                    ],
+                    [
+                        7.126055,
+                        62.300005
+                    ],
+                    [
+                        7.125385,
+                        62.300135
+                    ],
+                    [
+                        7.124682,
+                        62.300246
+                    ],
+                    [
+                        7.124054,
+                        62.300327
+                    ],
+                    [
+                        7.123373,
+                        62.300395
+                    ],
+                    [
+                        7.122088,
+                        62.300465
+                    ],
+                    [
+                        7.121455,
+                        62.30048
+                    ],
+                    [
+                        7.120018,
+                        62.300454
+                    ],
+                    [
+                        7.117451,
+                        62.300369
+                    ],
+                    [
+                        7.116153,
+                        62.300347
+                    ],
+                    [
+                        7.1156,
+                        62.300359
+                    ],
+                    [
+                        7.11506,
+                        62.30039
+                    ],
+                    [
+                        7.114098,
+                        62.300494
+                    ],
+                    [
+                        7.113178,
+                        62.300669
+                    ],
+                    [
+                        7.112666,
+                        62.300802
+                    ],
+                    [
+                        7.112188,
+                        62.300946
+                    ],
+                    [
+                        7.111783,
+                        62.30109
+                    ],
+                    [
+                        7.111545,
+                        62.301176
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        7.111545,
+                        62.301176
+                    ],
+                    [
+                        7.112188,
+                        62.300946
+                    ],
+                    [
+                        7.112666,
+                        62.300802
+                    ],
+                    [
+                        7.113178,
+                        62.300669
+                    ],
+                    [
+                        7.114098,
+                        62.300494
+                    ],
+                    [
+                        7.11506,
+                        62.30039
+                    ],
+                    [
+                        7.1156,
+                        62.300359
+                    ],
+                    [
+                        7.116153,
+                        62.300347
+                    ],
+                    [
+                        7.117451,
+                        62.300369
+                    ],
+                    [
+                        7.120018,
+                        62.300454
+                    ],
+                    [
+                        7.121455,
+                        62.30048
+                    ],
+                    [
+                        7.122088,
+                        62.300465
+                    ],
+                    [
+                        7.123373,
+                        62.300395
+                    ],
+                    [
+                        7.124054,
+                        62.300327
+                    ],
+                    [
+                        7.124682,
+                        62.300246
+                    ],
+                    [
+                        7.125385,
+                        62.300135
+                    ],
+                    [
+                        7.126055,
+                        62.300005
+                    ],
+                    [
+                        7.126651,
+                        62.29987
+                    ],
+                    [
+                        7.136451,
+                        62.297308
+                    ],
+                    [
+                        7.137173,
+                        62.297137
+                    ],
+                    [
+                        7.13768,
+                        62.297032
+                    ],
+                    [
+                        7.138238,
+                        62.296948
+                    ],
+                    [
+                        7.138691,
+                        62.296902
+                    ],
+                    [
+                        7.139547,
+                        62.296871
+                    ],
+                    [
+                        7.139547,
+                        62.296871
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        }
+    ],
+    "type": "FeatureCollection"
+};
+	map.on("load", function() {
+	    console.log("map loaded")
+	    map.addSource("gpx-tracks",
+			  {"type": "geojson",
+			   "data":data
+			  });
+	    map.addLayer({
+		"id": "gpx-layer",
+		"source": "gpx-tracks",
+		"type": "line",
+		"layout": {"line-join": "round",
+			   "line-cap": "round"},
+		"paint": {"line-color": "#1515EE",
+			  "line-width": 3,
+			  "line-opacity":0.25,
+			  "line-offset":1}
+	    });
+	    
+	    var layer = L.geoJson(data);
+	    // get bounds, and re-format to a mapbox friendly format:
+	    var bounds = layer.getBounds();
+	    var northEast = [bounds['_northEast']['lng'], bounds['_northEast']['lat']]
+	    var southWest = [bounds['_southWest']['lng'], bounds['_southWest']['lat']]
+	    map.fitBounds([southWest, northEast]);
+            _t('h3').textContent = "";
+	});
+	
+	map.on('click', function(e) {
+	    var features = map.queryRenderedFeatures(e.point, {
+		layers: ['cycletourer-simplified-dstse3-bicycle-no', 'cycletourer-simplified-dstse3-bicycle-yes',
+			 'cycletourer-simplified-dstse3-bicycle-white', 'cycletourer-simplified-dstse3-bicycle-yellow',
+			 'vegvesen-simplified-3pt3m7-no', 'vegvesen-simplified-3pt3m7-yes',
+			 'vegvesen-simplified-3pt3m7-white']
+	    });
+	    
+	    if (!features.length) {
+		return;
+	    }
+	    
+	    var feature = features[0];
+	    var html = "<pre>";
+	    for (var key in feature.properties) {
+		html += key + " = " + feature.properties[key] + "\n";
+	    }
+	    html += "</pre>";
+	    
+	    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+		.setLngLat(feature.geometry.coordinates)
+		.setHTML(html)
+		.setLngLat(feature.geometry.coordinates)
+		.addTo(map);
+	});
       }
 
       display_gpx(document.getElementById('demo'));
     </script>
+
     
           <!--     <script type="text/javascript"> -->
           <!--   var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); -->

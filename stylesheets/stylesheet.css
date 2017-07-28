@@ -189,7 +189,7 @@ missing_value {
 
 pre, code {
     overflow: auto;
-    width: 220px;
+    width: 512px;
     
   /* width: 100%; */
   color: #222;
@@ -481,8 +481,8 @@ Small Device Styles
   }
 
   code, pre {
-    min-width: 320px;
-    max-width: 480px;
+    min-width: 512px;
+    max-width: 512px;
     font-size: 11px;
   }
 

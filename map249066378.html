@@ -3,14 +3,15 @@
 
   <head>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+    <link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
     
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="DESCRIPTION">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-    
+
     <style type="text/css">
       .gpx { border: 2px #aaa solid; border-radius: 5px;
         box-shadow: 0 0 3px 3px #ccc;
@@ -54,14 +55,14 @@
 	
 	Showing 4 auto-routed bicycle routes (using <a href="https://github.com/graphhopper/graphhopper"
 title="graphhoppers github page">graphhopper</a>) between the two ends of the tunnel. Download
-                gpx file: <a href="map249066378.gpx"
+                    gpx file: <a href="map249066378.gpx"
 title="gpx fil">map249066378.gpx</a>. Openstreetmap tags:
-                <pre>highway = trunk
+                    <pre>highway = trunk
 lit = yes
 name = Svotunnelen
 ref = 13
 </pre>
-                
+                    
 	
 	<section id="demo" class="gpx" data-gpx-source="map249066378.gpx" data-map-target="demo-map">
 	  <header>
@@ -88,52 +89,639 @@ ref = 13
       </footer>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
-    <script src="https://rawgithub.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
-    <script type="application/javascript">
-      function display_gpx(elt) {
-        if (!elt) return;
+    <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js"></script>
 
+<script>
+    function display_gpx(elt) {
+        if (!elt) return;
+	
         var url = elt.getAttribute('data-gpx-source');
         var mapid = elt.getAttribute('data-map-target');
         if (!url || !mapid) return;
-
+	
         function _t(t) { return elt.getElementsByTagName(t)[0]; }
         function _c(c) { return elt.getElementsByClassName(c)[0]; }
 
-        // var map = L.map(mapid);
-        // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //   attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>'
-        // }).addTo(map);
-	var map = L.map(mapid);
-          L.tileLayer('https://api.mapbox.com/styles/v1/obtitus/cj58m4n684gi12rrm5km4ykyk/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoib2J0aXR1cyIsImEiOiJjaWYzbXF1M3IwMGtuc3ZsdmhhYXR4d2hpIn0.tQQLwWt3e_NhGtTdUYLzwQ', {
-		      attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">Mapbox</a> <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
-        }).addTo(map);
+	console.log("loading map");
+	mapboxgl.accessToken = 'pk.eyJ1Ijoib2J0aXR1cyIsImEiOiJjaWYzbXF1M3IwMGtuc3ZsdmhhYXR4d2hpIn0.tQQLwWt3e_NhGtTdUYLzwQ';
+	var map = new mapboxgl.Map({
+	    container: mapid,
+	    style: 'mapbox://styles/obtitus/cj58m4n684gi12rrm5km4ykyk',
+	    center: [20, 65],
+	    zoom: 5
+	});
 
-        var control = L.control.layers(null, null).addTo(map);
-
-        new L.GPX(url, {
-          async: true,
-          marker_options: {
-            startIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png',
-            endIconUrl:   'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-end.png',
-            shadowUrl:    'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-shadow.png',
-          },
-        }).on('loaded', function(e) {
-          var gpx = e.target;
-          map.fitBounds(gpx.getBounds());
-          control.addOverlay(gpx, gpx.get_name());
-
-          /*
-           * Note: the code below relies on the fact that the demo GPX file is
-           * an actual GPS track with timing and heartrate information.
-           */
-          _t('h3').textContent = gpx.get_name();
-        }).addTo(map);
+	var data = {
+    "features": [
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        6.069429,
+                        59.07895
+                    ],
+                    [
+                        6.068687,
+                        59.078173
+                    ],
+                    [
+                        6.06765,
+                        59.077538
+                    ],
+                    [
+                        6.067971,
+                        59.077527
+                    ],
+                    [
+                        6.068348,
+                        59.0778
+                    ],
+                    [
+                        6.068398,
+                        59.077836
+                    ],
+                    [
+                        6.072283,
+                        59.080114
+                    ],
+                    [
+                        6.073785,
+                        59.080908
+                    ],
+                    [
+                        6.075719,
+                        59.08175
+                    ],
+                    [
+                        6.077154,
+                        59.082286
+                    ],
+                    [
+                        6.078012,
+                        59.082529
+                    ],
+                    [
+                        6.078902,
+                        59.082682
+                    ],
+                    [
+                        6.080704,
+                        59.082872
+                    ],
+                    [
+                        6.082701,
+                        59.08319
+                    ],
+                    [
+                        6.084364,
+                        59.083642
+                    ],
+                    [
+                        6.085093,
+                        59.083808
+                    ],
+                    [
+                        6.08578,
+                        59.083907
+                    ],
+                    [
+                        6.089406,
+                        59.084182
+                    ],
+                    [
+                        6.090584,
+                        59.08443
+                    ],
+                    [
+                        6.09298,
+                        59.0847
+                    ],
+                    [
+                        6.094138,
+                        59.08514
+                    ],
+                    [
+                        6.095835,
+                        59.085442
+                    ],
+                    [
+                        6.102378,
+                        59.087074
+                    ],
+                    [
+                        6.107116,
+                        59.088442
+                    ],
+                    [
+                        6.113596,
+                        59.090637
+                    ],
+                    [
+                        6.114568,
+                        59.090563
+                    ],
+                    [
+                        6.115568,
+                        59.090352
+                    ],
+                    [
+                        6.116098,
+                        59.089772
+                    ],
+                    [
+                        6.117067,
+                        59.089351
+                    ],
+                    [
+                        6.118075,
+                        59.089337
+                    ],
+                    [
+                        6.121459,
+                        59.09019
+                    ],
+                    [
+                        6.122842,
+                        59.090426
+                    ],
+                    [
+                        6.124577,
+                        59.090828
+                    ],
+                    [
+                        6.128848,
+                        59.092155
+                    ],
+                    [
+                        6.132347,
+                        59.093306
+                    ],
+                    [
+                        6.13347,
+                        59.093578
+                    ],
+                    [
+                        6.134549,
+                        59.093769
+                    ],
+                    [
+                        6.13551,
+                        59.094317
+                    ],
+                    [
+                        6.136005,
+                        59.094881
+                    ],
+                    [
+                        6.136285,
+                        59.095518
+                    ],
+                    [
+                        6.136417,
+                        59.095702
+                    ],
+                    [
+                        6.13734,
+                        59.09645
+                    ],
+                    [
+                        6.13963,
+                        59.097575
+                    ],
+                    [
+                        6.139716,
+                        59.09762
+                    ],
+                    [
+                        6.140844,
+                        59.098052
+                    ],
+                    [
+                        6.140884,
+                        59.098183
+                    ],
+                    [
+                        6.140324,
+                        59.098019
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        6.069429,
+                        59.07895
+                    ],
+                    [
+                        6.069818,
+                        59.079793
+                    ],
+                    [
+                        6.06986,
+                        59.0806
+                    ],
+                    [
+                        6.069999,
+                        59.081271
+                    ],
+                    [
+                        6.070513,
+                        59.081928
+                    ],
+                    [
+                        6.071389,
+                        59.082642
+                    ],
+                    [
+                        6.072531,
+                        59.083129
+                    ],
+                    [
+                        6.094109,
+                        59.088223
+                    ],
+                    [
+                        6.112867,
+                        59.092616
+                    ],
+                    [
+                        6.127078,
+                        59.095965
+                    ],
+                    [
+                        6.129928,
+                        59.09652
+                    ],
+                    [
+                        6.132621,
+                        59.096873
+                    ],
+                    [
+                        6.135274,
+                        59.097116
+                    ],
+                    [
+                        6.137535,
+                        59.097408
+                    ],
+                    [
+                        6.139598,
+                        59.097827
+                    ],
+                    [
+                        6.140324,
+                        59.098019
+                    ],
+                    [
+                        6.140324,
+                        59.098019
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        6.140324,
+                        59.098019
+                    ],
+                    [
+                        6.140884,
+                        59.098183
+                    ],
+                    [
+                        6.140844,
+                        59.098052
+                    ],
+                    [
+                        6.139759,
+                        59.097634
+                    ],
+                    [
+                        6.139716,
+                        59.09762
+                    ],
+                    [
+                        6.13734,
+                        59.09645
+                    ],
+                    [
+                        6.136417,
+                        59.095702
+                    ],
+                    [
+                        6.136285,
+                        59.095518
+                    ],
+                    [
+                        6.136005,
+                        59.094881
+                    ],
+                    [
+                        6.13551,
+                        59.094317
+                    ],
+                    [
+                        6.134549,
+                        59.093769
+                    ],
+                    [
+                        6.13347,
+                        59.093578
+                    ],
+                    [
+                        6.132347,
+                        59.093306
+                    ],
+                    [
+                        6.128848,
+                        59.092155
+                    ],
+                    [
+                        6.124577,
+                        59.090828
+                    ],
+                    [
+                        6.122842,
+                        59.090426
+                    ],
+                    [
+                        6.121459,
+                        59.09019
+                    ],
+                    [
+                        6.118075,
+                        59.089337
+                    ],
+                    [
+                        6.117067,
+                        59.089351
+                    ],
+                    [
+                        6.116098,
+                        59.089772
+                    ],
+                    [
+                        6.115568,
+                        59.090352
+                    ],
+                    [
+                        6.114568,
+                        59.090563
+                    ],
+                    [
+                        6.113596,
+                        59.090637
+                    ],
+                    [
+                        6.107116,
+                        59.088442
+                    ],
+                    [
+                        6.102378,
+                        59.087074
+                    ],
+                    [
+                        6.095835,
+                        59.085442
+                    ],
+                    [
+                        6.094138,
+                        59.08514
+                    ],
+                    [
+                        6.09298,
+                        59.0847
+                    ],
+                    [
+                        6.090584,
+                        59.08443
+                    ],
+                    [
+                        6.089406,
+                        59.084182
+                    ],
+                    [
+                        6.08578,
+                        59.083907
+                    ],
+                    [
+                        6.085093,
+                        59.083808
+                    ],
+                    [
+                        6.084364,
+                        59.083642
+                    ],
+                    [
+                        6.082701,
+                        59.08319
+                    ],
+                    [
+                        6.080704,
+                        59.082872
+                    ],
+                    [
+                        6.078902,
+                        59.082682
+                    ],
+                    [
+                        6.078012,
+                        59.082529
+                    ],
+                    [
+                        6.077154,
+                        59.082286
+                    ],
+                    [
+                        6.075719,
+                        59.08175
+                    ],
+                    [
+                        6.073785,
+                        59.080908
+                    ],
+                    [
+                        6.072283,
+                        59.080114
+                    ],
+                    [
+                        6.071232,
+                        59.079486
+                    ],
+                    [
+                        6.068455,
+                        59.077869
+                    ],
+                    [
+                        6.067971,
+                        59.077527
+                    ],
+                    [
+                        6.06765,
+                        59.077538
+                    ],
+                    [
+                        6.068687,
+                        59.078173
+                    ],
+                    [
+                        6.069429,
+                        59.07895
+                    ],
+                    [
+                        6.069429,
+                        59.07895
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        6.140324,
+                        59.098019
+                    ],
+                    [
+                        6.139598,
+                        59.097827
+                    ],
+                    [
+                        6.137535,
+                        59.097408
+                    ],
+                    [
+                        6.135274,
+                        59.097116
+                    ],
+                    [
+                        6.132621,
+                        59.096873
+                    ],
+                    [
+                        6.129928,
+                        59.09652
+                    ],
+                    [
+                        6.127078,
+                        59.095965
+                    ],
+                    [
+                        6.112867,
+                        59.092616
+                    ],
+                    [
+                        6.094109,
+                        59.088223
+                    ],
+                    [
+                        6.072531,
+                        59.083129
+                    ],
+                    [
+                        6.071389,
+                        59.082642
+                    ],
+                    [
+                        6.070513,
+                        59.081928
+                    ],
+                    [
+                        6.069999,
+                        59.081271
+                    ],
+                    [
+                        6.06986,
+                        59.0806
+                    ],
+                    [
+                        6.069818,
+                        59.079793
+                    ],
+                    [
+                        6.069429,
+                        59.07895
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        }
+    ],
+    "type": "FeatureCollection"
+};
+	map.on("load", function() {
+	    console.log("map loaded")
+	    map.addSource("gpx-tracks",
+			  {"type": "geojson",
+			   "data":data
+			  });
+	    map.addLayer({
+		"id": "gpx-layer",
+		"source": "gpx-tracks",
+		"type": "line",
+		"layout": {"line-join": "round",
+			   "line-cap": "round"},
+		"paint": {"line-color": "#1515EE",
+			  "line-width": 3,
+			  "line-opacity":0.25,
+			  "line-offset":1}
+	    });
+	    
+	    var layer = L.geoJson(data);
+	    // get bounds, and re-format to a mapbox friendly format:
+	    var bounds = layer.getBounds();
+	    var northEast = [bounds['_northEast']['lng'], bounds['_northEast']['lat']]
+	    var southWest = [bounds['_southWest']['lng'], bounds['_southWest']['lat']]
+	    map.fitBounds([southWest, northEast]);
+            _t('h3').textContent = "";
+	});
+	
+	map.on('click', function(e) {
+	    var features = map.queryRenderedFeatures(e.point, {
+		layers: ['cycletourer-simplified-dstse3-bicycle-no', 'cycletourer-simplified-dstse3-bicycle-yes',
+			 'cycletourer-simplified-dstse3-bicycle-white', 'cycletourer-simplified-dstse3-bicycle-yellow',
+			 'vegvesen-simplified-3pt3m7-no', 'vegvesen-simplified-3pt3m7-yes',
+			 'vegvesen-simplified-3pt3m7-white']
+	    });
+	    
+	    if (!features.length) {
+		return;
+	    }
+	    
+	    var feature = features[0];
+	    var html = "<pre>";
+	    for (var key in feature.properties) {
+		html += key + " = " + feature.properties[key] + "\n";
+	    }
+	    html += "</pre>";
+	    
+	    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+		.setLngLat(feature.geometry.coordinates)
+		.setHTML(html)
+		.setLngLat(feature.geometry.coordinates)
+		.addTo(map);
+	});
       }
 
       display_gpx(document.getElementById('demo'));
     </script>
+
     
           <!--     <script type="text/javascript"> -->
           <!--   var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); -->

@@ -3,14 +3,15 @@
 
   <head>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+    <link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
     
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="DESCRIPTION">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-    
+
     <style type="text/css">
       .gpx { border: 2px #aaa solid; border-radius: 5px;
         box-shadow: 0 0 3px 3px #ccc;
@@ -54,14 +55,14 @@
 	
 	Showing 3 auto-routed bicycle routes (using <a href="https://github.com/graphhopper/graphhopper"
 title="graphhoppers github page">graphhopper</a>) between the two ends of the tunnel. Download
-                gpx file: <a href="map362382729.gpx"
+                    gpx file: <a href="map362382729.gpx"
 title="gpx fil">map362382729.gpx</a>. Openstreetmap tags:
-                <pre>bicycle = no
+                    <pre>bicycle = no
 highway = trunk
 name = Kjørbotunnelen
 ref = E 16
 </pre>
-                
+                    
 	
 	<section id="demo" class="gpx" data-gpx-source="map362382729.gpx" data-map-target="demo-map">
 	  <header>
@@ -88,52 +89,874 @@ ref = E 16
       </footer>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
-    <script src="https://rawgithub.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
-    <script type="application/javascript">
-      function display_gpx(elt) {
-        if (!elt) return;
+    <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js"></script>
 
+<script>
+    function display_gpx(elt) {
+        if (!elt) return;
+	
         var url = elt.getAttribute('data-gpx-source');
         var mapid = elt.getAttribute('data-map-target');
         if (!url || !mapid) return;
-
+	
         function _t(t) { return elt.getElementsByTagName(t)[0]; }
         function _c(c) { return elt.getElementsByClassName(c)[0]; }
 
-        // var map = L.map(mapid);
-        // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //   attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>'
-        // }).addTo(map);
-	var map = L.map(mapid);
-          L.tileLayer('https://api.mapbox.com/styles/v1/obtitus/cj58m4n684gi12rrm5km4ykyk/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoib2J0aXR1cyIsImEiOiJjaWYzbXF1M3IwMGtuc3ZsdmhhYXR4d2hpIn0.tQQLwWt3e_NhGtTdUYLzwQ', {
-		      attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">Mapbox</a> <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
-        }).addTo(map);
+	console.log("loading map");
+	mapboxgl.accessToken = 'pk.eyJ1Ijoib2J0aXR1cyIsImEiOiJjaWYzbXF1M3IwMGtuc3ZsdmhhYXR4d2hpIn0.tQQLwWt3e_NhGtTdUYLzwQ';
+	var map = new mapboxgl.Map({
+	    container: mapid,
+	    style: 'mapbox://styles/obtitus/cj58m4n684gi12rrm5km4ykyk',
+	    center: [20, 65],
+	    zoom: 5
+	});
 
-        var control = L.control.layers(null, null).addTo(map);
-
-        new L.GPX(url, {
-          async: true,
-          marker_options: {
-            startIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png',
-            endIconUrl:   'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-end.png',
-            shadowUrl:    'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-shadow.png',
-          },
-        }).on('loaded', function(e) {
-          var gpx = e.target;
-          map.fitBounds(gpx.getBounds());
-          control.addOverlay(gpx, gpx.get_name());
-
-          /*
-           * Note: the code below relies on the fact that the demo GPX file is
-           * an actual GPS track with timing and heartrate information.
-           */
-          _t('h3').textContent = gpx.get_name();
-        }).addTo(map);
+	var data = {
+    "features": [
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        10.522005,
+                        59.888374
+                    ],
+                    [
+                        10.521938,
+                        59.88848
+                    ],
+                    [
+                        10.521865,
+                        59.888507
+                    ],
+                    [
+                        10.521709,
+                        59.888532
+                    ],
+                    [
+                        10.5216,
+                        59.888526
+                    ],
+                    [
+                        10.521461,
+                        59.888484
+                    ],
+                    [
+                        10.521377,
+                        59.888401
+                    ],
+                    [
+                        10.521364,
+                        59.888261
+                    ],
+                    [
+                        10.52118,
+                        59.888072
+                    ],
+                    [
+                        10.520394,
+                        59.887517
+                    ],
+                    [
+                        10.519081,
+                        59.886742
+                    ],
+                    [
+                        10.518862,
+                        59.886648
+                    ],
+                    [
+                        10.518686,
+                        59.886611
+                    ],
+                    [
+                        10.518568,
+                        59.886661
+                    ],
+                    [
+                        10.518447,
+                        59.886674
+                    ],
+                    [
+                        10.518348,
+                        59.886664
+                    ],
+                    [
+                        10.518251,
+                        59.886633
+                    ],
+                    [
+                        10.517853,
+                        59.88691
+                    ],
+                    [
+                        10.517666,
+                        59.887172
+                    ],
+                    [
+                        10.517634,
+                        59.887374
+                    ],
+                    [
+                        10.517657,
+                        59.88759
+                    ],
+                    [
+                        10.51782,
+                        59.888102
+                    ],
+                    [
+                        10.517868,
+                        59.888352
+                    ],
+                    [
+                        10.517848,
+                        59.888598
+                    ],
+                    [
+                        10.517739,
+                        59.888842
+                    ],
+                    [
+                        10.517565,
+                        59.889078
+                    ],
+                    [
+                        10.51737,
+                        59.889253
+                    ],
+                    [
+                        10.517046,
+                        59.889475
+                    ],
+                    [
+                        10.516972,
+                        59.889636
+                    ],
+                    [
+                        10.516946,
+                        59.88969
+                    ],
+                    [
+                        10.516956,
+                        59.889736
+                    ],
+                    [
+                        10.516922,
+                        59.889775
+                    ],
+                    [
+                        10.516832,
+                        59.889806
+                    ],
+                    [
+                        10.516739,
+                        59.889806
+                    ],
+                    [
+                        10.516607,
+                        59.88983
+                    ],
+                    [
+                        10.516325,
+                        59.889908
+                    ],
+                    [
+                        10.51588,
+                        59.890164
+                    ],
+                    [
+                        10.515568,
+                        59.890285
+                    ],
+                    [
+                        10.515214,
+                        59.890347
+                    ],
+                    [
+                        10.514493,
+                        59.890383
+                    ],
+                    [
+                        10.514178,
+                        59.890398
+                    ],
+                    [
+                        10.514104,
+                        59.890488
+                    ],
+                    [
+                        10.513984,
+                        59.890522
+                    ],
+                    [
+                        10.513584,
+                        59.890588
+                    ],
+                    [
+                        10.513588,
+                        59.890827
+                    ],
+                    [
+                        10.513601,
+                        59.891058
+                    ],
+                    [
+                        10.513549,
+                        59.891207
+                    ],
+                    [
+                        10.513258,
+                        59.891628
+                    ],
+                    [
+                        10.513262,
+                        59.89168
+                    ],
+                    [
+                        10.514006,
+                        59.891526
+                    ],
+                    [
+                        10.514268,
+                        59.891496
+                    ],
+                    [
+                        10.514664,
+                        59.891328
+                    ],
+                    [
+                        10.514873,
+                        59.89118
+                    ],
+                    [
+                        10.515514,
+                        59.890792
+                    ],
+                    [
+                        10.51597,
+                        59.890556
+                    ],
+                    [
+                        10.516605,
+                        59.89036
+                    ],
+                    [
+                        10.517132,
+                        59.890098
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        10.517132,
+                        59.890098
+                    ],
+                    [
+                        10.515714,
+                        59.890828
+                    ],
+                    [
+                        10.515034,
+                        59.891232
+                    ],
+                    [
+                        10.51427,
+                        59.891764
+                    ],
+                    [
+                        10.513856,
+                        59.892095
+                    ],
+                    [
+                        10.513402,
+                        59.892351
+                    ],
+                    [
+                        10.513343,
+                        59.892445
+                    ],
+                    [
+                        10.513423,
+                        59.892511
+                    ],
+                    [
+                        10.513484,
+                        59.892531
+                    ],
+                    [
+                        10.513608,
+                        59.892508
+                    ],
+                    [
+                        10.513729,
+                        59.892545
+                    ],
+                    [
+                        10.513826,
+                        59.892502
+                    ],
+                    [
+                        10.514541,
+                        59.891799
+                    ],
+                    [
+                        10.51483,
+                        59.891533
+                    ],
+                    [
+                        10.514995,
+                        59.89141
+                    ],
+                    [
+                        10.515114,
+                        59.891386
+                    ],
+                    [
+                        10.515153,
+                        59.891314
+                    ],
+                    [
+                        10.51524,
+                        59.891277
+                    ],
+                    [
+                        10.515351,
+                        59.891268
+                    ],
+                    [
+                        10.515759,
+                        59.891088
+                    ],
+                    [
+                        10.516398,
+                        59.89077
+                    ],
+                    [
+                        10.517269,
+                        59.890385
+                    ],
+                    [
+                        10.517351,
+                        59.890334
+                    ],
+                    [
+                        10.517376,
+                        59.890279
+                    ],
+                    [
+                        10.517276,
+                        59.890064
+                    ],
+                    [
+                        10.517099,
+                        59.889915
+                    ],
+                    [
+                        10.516834,
+                        59.889828
+                    ],
+                    [
+                        10.516777,
+                        59.889809
+                    ],
+                    [
+                        10.516696,
+                        59.889797
+                    ],
+                    [
+                        10.516615,
+                        59.889741
+                    ],
+                    [
+                        10.516625,
+                        59.889687
+                    ],
+                    [
+                        10.517046,
+                        59.889475
+                    ],
+                    [
+                        10.51737,
+                        59.889253
+                    ],
+                    [
+                        10.517565,
+                        59.889078
+                    ],
+                    [
+                        10.517739,
+                        59.888842
+                    ],
+                    [
+                        10.517848,
+                        59.888598
+                    ],
+                    [
+                        10.517868,
+                        59.888352
+                    ],
+                    [
+                        10.51782,
+                        59.888102
+                    ],
+                    [
+                        10.517657,
+                        59.88759
+                    ],
+                    [
+                        10.517634,
+                        59.887374
+                    ],
+                    [
+                        10.517666,
+                        59.887172
+                    ],
+                    [
+                        10.517853,
+                        59.88691
+                    ],
+                    [
+                        10.518181,
+                        59.886694
+                    ],
+                    [
+                        10.518251,
+                        59.886633
+                    ],
+                    [
+                        10.518172,
+                        59.886559
+                    ],
+                    [
+                        10.518176,
+                        59.886496
+                    ],
+                    [
+                        10.518242,
+                        59.886435
+                    ],
+                    [
+                        10.518336,
+                        59.886401
+                    ],
+                    [
+                        10.518486,
+                        59.886391
+                    ],
+                    [
+                        10.518593,
+                        59.886409
+                    ],
+                    [
+                        10.518673,
+                        59.886444
+                    ],
+                    [
+                        10.518734,
+                        59.886533
+                    ],
+                    [
+                        10.518686,
+                        59.886611
+                    ],
+                    [
+                        10.518862,
+                        59.886648
+                    ],
+                    [
+                        10.519081,
+                        59.886742
+                    ],
+                    [
+                        10.520394,
+                        59.887517
+                    ],
+                    [
+                        10.52118,
+                        59.888072
+                    ],
+                    [
+                        10.521423,
+                        59.888169
+                    ],
+                    [
+                        10.52155,
+                        59.888201
+                    ],
+                    [
+                        10.521624,
+                        59.888213
+                    ],
+                    [
+                        10.521808,
+                        59.888225
+                    ],
+                    [
+                        10.521907,
+                        59.888256
+                    ],
+                    [
+                        10.521997,
+                        59.888331
+                    ],
+                    [
+                        10.522005,
+                        59.888374
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        10.517132,
+                        59.890098
+                    ],
+                    [
+                        10.515714,
+                        59.890828
+                    ],
+                    [
+                        10.515034,
+                        59.891232
+                    ],
+                    [
+                        10.51427,
+                        59.891764
+                    ],
+                    [
+                        10.513856,
+                        59.892095
+                    ],
+                    [
+                        10.513402,
+                        59.892351
+                    ],
+                    [
+                        10.513343,
+                        59.892445
+                    ],
+                    [
+                        10.513423,
+                        59.892511
+                    ],
+                    [
+                        10.513484,
+                        59.892531
+                    ],
+                    [
+                        10.513608,
+                        59.892508
+                    ],
+                    [
+                        10.513729,
+                        59.892545
+                    ],
+                    [
+                        10.513826,
+                        59.892502
+                    ],
+                    [
+                        10.514541,
+                        59.891799
+                    ],
+                    [
+                        10.51483,
+                        59.891533
+                    ],
+                    [
+                        10.514995,
+                        59.89141
+                    ],
+                    [
+                        10.515114,
+                        59.891386
+                    ],
+                    [
+                        10.515153,
+                        59.891314
+                    ],
+                    [
+                        10.51524,
+                        59.891277
+                    ],
+                    [
+                        10.515351,
+                        59.891268
+                    ],
+                    [
+                        10.515759,
+                        59.891088
+                    ],
+                    [
+                        10.516398,
+                        59.89077
+                    ],
+                    [
+                        10.517269,
+                        59.890385
+                    ],
+                    [
+                        10.517351,
+                        59.890334
+                    ],
+                    [
+                        10.517376,
+                        59.890279
+                    ],
+                    [
+                        10.517276,
+                        59.890064
+                    ],
+                    [
+                        10.517099,
+                        59.889915
+                    ],
+                    [
+                        10.516834,
+                        59.889828
+                    ],
+                    [
+                        10.516777,
+                        59.889809
+                    ],
+                    [
+                        10.516696,
+                        59.889797
+                    ],
+                    [
+                        10.516615,
+                        59.889741
+                    ],
+                    [
+                        10.516613,
+                        59.889708
+                    ],
+                    [
+                        10.516417,
+                        59.88959
+                    ],
+                    [
+                        10.516126,
+                        59.889461
+                    ],
+                    [
+                        10.515951,
+                        59.889387
+                    ],
+                    [
+                        10.51644,
+                        59.889099
+                    ],
+                    [
+                        10.516748,
+                        59.888814
+                    ],
+                    [
+                        10.516906,
+                        59.888561
+                    ],
+                    [
+                        10.516935,
+                        59.888453
+                    ],
+                    [
+                        10.516791,
+                        59.888125
+                    ],
+                    [
+                        10.51676,
+                        59.887951
+                    ],
+                    [
+                        10.516868,
+                        59.887694
+                    ],
+                    [
+                        10.517067,
+                        59.887339
+                    ],
+                    [
+                        10.517376,
+                        59.886925
+                    ],
+                    [
+                        10.517547,
+                        59.886825
+                    ],
+                    [
+                        10.5177,
+                        59.886879
+                    ],
+                    [
+                        10.517853,
+                        59.88691
+                    ],
+                    [
+                        10.518181,
+                        59.886694
+                    ],
+                    [
+                        10.518251,
+                        59.886633
+                    ],
+                    [
+                        10.518172,
+                        59.886559
+                    ],
+                    [
+                        10.518176,
+                        59.886496
+                    ],
+                    [
+                        10.518242,
+                        59.886435
+                    ],
+                    [
+                        10.518336,
+                        59.886401
+                    ],
+                    [
+                        10.518486,
+                        59.886391
+                    ],
+                    [
+                        10.518593,
+                        59.886409
+                    ],
+                    [
+                        10.518673,
+                        59.886444
+                    ],
+                    [
+                        10.518734,
+                        59.886533
+                    ],
+                    [
+                        10.518686,
+                        59.886611
+                    ],
+                    [
+                        10.518862,
+                        59.886648
+                    ],
+                    [
+                        10.519081,
+                        59.886742
+                    ],
+                    [
+                        10.520394,
+                        59.887517
+                    ],
+                    [
+                        10.52118,
+                        59.888072
+                    ],
+                    [
+                        10.521423,
+                        59.888169
+                    ],
+                    [
+                        10.52155,
+                        59.888201
+                    ],
+                    [
+                        10.521624,
+                        59.888213
+                    ],
+                    [
+                        10.521808,
+                        59.888225
+                    ],
+                    [
+                        10.521907,
+                        59.888256
+                    ],
+                    [
+                        10.521997,
+                        59.888331
+                    ],
+                    [
+                        10.522005,
+                        59.888374
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "properties": {},
+            "type": "Feature"
+        }
+    ],
+    "type": "FeatureCollection"
+};
+	map.on("load", function() {
+	    console.log("map loaded")
+	    map.addSource("gpx-tracks",
+			  {"type": "geojson",
+			   "data":data
+			  });
+	    map.addLayer({
+		"id": "gpx-layer",
+		"source": "gpx-tracks",
+		"type": "line",
+		"layout": {"line-join": "round",
+			   "line-cap": "round"},
+		"paint": {"line-color": "#1515EE",
+			  "line-width": 3,
+			  "line-opacity":0.25,
+			  "line-offset":1}
+	    });
+	    
+	    var layer = L.geoJson(data);
+	    // get bounds, and re-format to a mapbox friendly format:
+	    var bounds = layer.getBounds();
+	    var northEast = [bounds['_northEast']['lng'], bounds['_northEast']['lat']]
+	    var southWest = [bounds['_southWest']['lng'], bounds['_southWest']['lat']]
+	    map.fitBounds([southWest, northEast]);
+            _t('h3').textContent = "";
+	});
+	
+	map.on('click', function(e) {
+	    var features = map.queryRenderedFeatures(e.point, {
+		layers: ['cycletourer-simplified-dstse3-bicycle-no', 'cycletourer-simplified-dstse3-bicycle-yes',
+			 'cycletourer-simplified-dstse3-bicycle-white', 'cycletourer-simplified-dstse3-bicycle-yellow',
+			 'vegvesen-simplified-3pt3m7-no', 'vegvesen-simplified-3pt3m7-yes',
+			 'vegvesen-simplified-3pt3m7-white']
+	    });
+	    
+	    if (!features.length) {
+		return;
+	    }
+	    
+	    var feature = features[0];
+	    var html = "<pre>";
+	    for (var key in feature.properties) {
+		html += key + " = " + feature.properties[key] + "\n";
+	    }
+	    html += "</pre>";
+	    
+	    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+		.setLngLat(feature.geometry.coordinates)
+		.setHTML(html)
+		.setLngLat(feature.geometry.coordinates)
+		.addTo(map);
+	});
       }
 
       display_gpx(document.getElementById('demo'));
     </script>
+
     
           <!--     <script type="text/javascript"> -->
           <!--   var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); -->
