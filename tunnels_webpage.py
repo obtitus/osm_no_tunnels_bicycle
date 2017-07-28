@@ -288,30 +288,35 @@ def create_table(osm, header, row_header='', table=None, osm_database=None, root
                 end = osm_database.nodes[item.nds[-1]]
                 end = (end.attribs['lat'], end.attribs['lon'])
                 
-                graphhopper_tracks = tunnels_graphhopper.main(output_filename=graphhopper_gpx, start=start, end=end)
+                graphhopper_tracks, graphhopper_geojson = tunnels_graphhopper.main(output_filename=graphhopper_gpx,
+                                                                                   start=start, end=end)
 
-                # map page, fixme: support map-page for non-ways?
-                template_map = os.path.join(root, 'template', 'map.html')
-                href = '%s.html' % map_id
-                output_map = os.path.join(root, 'output', href)
+                if len(graphhopper_tracks) != 0:
+                    # map page, fixme: support map-page for non-ways?
+                    template_map = os.path.join(root, 'template', 'map.html')
+                    href = '%s.html' % map_id
+                    output_map = os.path.join(root, 'output', href)
 
-                # INFO
-                gpx_url_link = link_template.format(href=gpx_url, title='gpx fil', text=gpx_url)
-                tags = create_pre_tags(way_osm.tags)
-                info = '''Showing %s auto-routed bicycle routes (using %s) between the two ends of the tunnel. Download
-                gpx file: %s. Openstreetmap tags:
-                %s
-                ''' % (len(graphhopper_tracks), graphhopper_url, gpx_url_link, tags)
-                write_template(template_map, output_map, map_id=map_id, tunnel_name=tunnel_name, info=info)
+                    # INFO
+                    gpx_url_link = link_template.format(href=gpx_url, title='gpx fil', text=gpx_url)
+                    tags = create_pre_tags(way_osm.tags)
+                    info = '''Showing %s auto-routed bicycle routes (using %s) between the two ends of the tunnel. Download
+                    gpx file: %s. Openstreetmap tags:
+                    %s
+                    ''' % (len(graphhopper_tracks), graphhopper_url, gpx_url_link, tags)
+                    write_template(template_map, output_map, map_id=map_id, tunnel_name=tunnel_name, info=info,
+                                   geojson=graphhopper_geojson)
 
-                veier = 'vei'
-                if len(graphhopper_tracks) > 1:
-                    veier = 'veier'
-                title = u'Se %s (om-)%s fra graphhopper' % (len(graphhopper_tracks), veier)
-                text = u'Vis %s (om-)%s' % (len(graphhopper_tracks), veier)
-                links += link_template.format(href=href, title=title, text=text)
-                links += ' ' + link_template.format(href=gpx_url, title='gpx fil med graphhopper tracks', text='gpx') + '\n'
-
+                    veier = 'vei'
+                    if len(graphhopper_tracks) > 1:
+                        veier = 'veier'
+                    title = u'Se %s (om-)%s fra graphhopper' % (len(graphhopper_tracks), veier)
+                    text = u'Vis %s (om-)%s' % (len(graphhopper_tracks), veier)
+                    links += link_template.format(href=href, title=title, text=text)
+                    links += ' ' + link_template.format(href=gpx_url, title='gpx fil med graphhopper tracks', text='gpx') + '\n'
+                else:
+                    logger.warning('Consider removing (short?) tunnel %s', way_osm)
+                    
         lat = item.attribs.get('lat', '')
         lon = item.attribs.get('lon', '')
         if lat != '' and lon != '':
@@ -389,13 +394,16 @@ def main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root='.',
     keys = get_all_keys(vegvesen_cycletourer)
     keys = sort_keys(keys)
 
-    # if delete_old:
-    #     # delete old tunnel-map pages
-    #     for f in glob.glob(os.path.join(root, 'output', 'map*.html')):
-    #         os.remove(f)
-    #     # delete old gpx traces
-    #     for f in glob.glob(os.path.join(root, 'output', 'map*.gpx')):
-    #         os.remove(f)
+    if delete_old:
+        # delete old tunnel-map pages
+        for f in glob.glob(os.path.join(root, 'output', 'map*.html')):
+            os.remove(f)
+        # delete old gpx traces
+        for f in glob.glob(os.path.join(root, 'output', 'map*.gpx')):
+            os.remove(f)
+        # delete old geojson traces
+        for f in glob.glob(os.path.join(root, 'output', 'map*.geojson')):
+            os.remove(f)
     
     # table
     table_header = keys

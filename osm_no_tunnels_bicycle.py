@@ -1,6 +1,9 @@
 import os
+import re
 import sys
 import json
+import pyproj
+import geojson
 import logging
 logger = logging.getLogger('osm_no_tunnels_bicycle')
 
@@ -129,10 +132,25 @@ def parse_vegvesen(json_soup):
         ref = str(vegreferanser)
 
     fylke = json_soup['lokasjon'][u'vegreferanser'][0]['fylke']
+    wkt = json_soup['lokasjon']['geometri']['wkt']
+    srid = json_soup['lokasjon']['geometri']['srid']
+    reg = re.match('POINT Z \(([-+\d.]+) ([-+\d.]+) ([-+\d.]+)\)', wkt)
+    wgs84 = (None, None)
+    if reg:
+        try:
+            utm33 = map(float, reg.groups())
+            projection = pyproj.Proj(init='epsg:%s' % srid)
+            wgs84 = projection(utm33[0], utm33[1], inverse=True)
+        except ValueError:
+            logger.warning('invalid POINT Z coordinate, "%s"', wkt)
+    else:
+        logger.warning('invalid POINT Z coordinate, "%s"', wkt)
+
+    lon, lat = wgs84
         
     #print vegreferanser
     return {'sykkelforbud': sykkelforbud, 'length':lengde, 'name':navn, 'comment':merknad_syklende, 'ref':ref,
-            'fylke':fylke}
+            'fylke':fylke, 'lat':lat, 'lon':lon}
 
 def convert_vegvesen_to_osm(item):
     bicycle = item['sykkelforbud'].lower()
@@ -148,13 +166,13 @@ def convert_vegvesen_to_osm(item):
 
     comment = item['comment']
     if comment != '':
-        comment = ', vegvesen.no: ' + comment
+        comment = ' vegvesen.no: ' + comment
 
     length = item['length']
     if length not in (None, ''):
         note = 'Length %sm%s' % (item['length'], comment)
     else:
-        note = comment
+        note = comment.strip()
         
     tags = {'bicycle':bicycle,
             'ref': item['ref'],
@@ -163,7 +181,11 @@ def convert_vegvesen_to_osm(item):
             'source':'Kartverket'}
     util.remove_empty_values(tags)
 
-    attribs = dict()            # FIXME: lat/lon needed
+    attribs = dict()
+    if item['lat'] != None and item['lon'] != None:
+        attribs['lat'] = item['lat']
+        attribs['lon'] = item['lon']
+    
     node = osmapis.Node(attribs=attribs,
                         tags=tags)
     return node
@@ -270,10 +292,24 @@ def write_osm(filename, lst):
     osm = osmapis.OSM()
     for item in lst:
         osm.add(item)
-        str(item)
 
     osm.save(filename)
     return osm
+
+def write_geojson(filename, lst):
+    logger.info('writing %s', filename)
+    features = list()
+    for item in lst:
+        point = geojson.Point((item.attribs['lon'], item.attribs['lat']))
+        f = geojson.Feature(geometry=point, properties=item.tags)
+        features.append(f)
+
+    feature_collection = geojson.FeatureCollection(features)
+
+    with open(filename, 'w') as f:
+        geojson.dump(feature_collection, f)
+    
+    return feature_collection
 
 def write_json(filename, lst):
     logger.info('writing %s', filename)
@@ -312,6 +348,7 @@ if __name__ == '__main__':
     write_json(cycletourer_raw_filename, cycletourer_data)
     cycletourer_osm = map(cycletourer.convert_to_osm, cycletourer_data)
     write_osm(cycletourer_simplified_filename, cycletourer_osm)
+    write_geojson(cycletourer_simplified_filename.replace('.osm', '.geojson'), cycletourer_osm)
     # for item in cycletourer_osm[:10]:
     #     print item
 
@@ -340,6 +377,7 @@ if __name__ == '__main__':
     # fixme: divide by fylke?
     vegvesen_forbud_osm = map(convert_vegvesen_to_osm, vegvesen_forbud)
     write_osm(vegvesen_simplified_filename, vegvesen_forbud_osm)
+    write_geojson(vegvesen_simplified_filename.replace('.osm', '.geojson'), vegvesen_forbud_osm)
 
     for item in osm_simple_list[:2]:
         print 'osm', item
