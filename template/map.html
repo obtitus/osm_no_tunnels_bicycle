@@ -32,21 +32,8 @@
 
   <body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/obtitus/osm_no_tunnels_bicycle">View on GitHub</a>
-
-          <h1 id="project_title">Tunnels in Norway to OSM</h1>
-          <h2 id="project_tagline">Tunnels in Norway to OSM: Improving bicycle related tags for Norwegian tunnels</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/obtitus/osm_no_tunnels_bicycle/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/obtitus/osm_no_tunnels_bicycle/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
+    {{header}}
+    
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
@@ -68,17 +55,7 @@
 	</section>
     </div>
 
-    
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">This page is maintained by <a href="https://github.com/obtitus">obtitus</a></p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-        <p class="copyright">Map data &copy;<a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a></p>
-	<p class="copyright">Cycletourer website&copy;<a href="http://www.cycletourer.co.uk">cycletourer.co.uk</a></p>
-	<p class="copyright">Statens vegvesen&copy;<a href="https://data.norge.no/nlod/no/1.0">NLOD</a></p>
-      </footer>
-    </div>
+    {{footer}}
 
     <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js"></script>
@@ -103,7 +80,35 @@
 	    zoom: 5
 	});
 
+	map.on('click', function(e) {
+	    var features = map.queryRenderedFeatures(e.point, {
+		layers: ['cycletourer-simplified-dstse3-bicycle-no', 'cycletourer-simplified-dstse3-bicycle-yes',
+			 'cycletourer-simplified-dstse3-bicycle-white', 'cycletourer-simplified-dstse3-bicycle-yellow',
+			 'vegvesen-simplified-3pt3m7-no', 'vegvesen-simplified-3pt3m7-yes',
+			 'vegvesen-simplified-3pt3m7-white']
+	    });
+	    
+	    if (!features.length) {
+		return;
+	    }
+	    
+	    var feature = features[0];
+	    var html = "<pre>";
+	    for (var key in feature.properties) {
+		html += key + " = " + feature.properties[key] + "\n";
+	    }
+	    html += "</pre>";
+	    
+	    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+		.setLngLat(feature.geometry.coordinates)
+		.setHTML(html)
+		.setLngLat(feature.geometry.coordinates)
+		.addTo(map);
+	});
+
 	var data = {{geojson}};
+        if (!data) return;
+	
 	map.on("load", function() {
 	    console.log("map loaded")
 	    map.addSource("gpx-tracks",
@@ -129,32 +134,6 @@
 	    var southWest = [bounds['_southWest']['lng'], bounds['_southWest']['lat']]
 	    map.fitBounds([southWest, northEast]);
             _t('h3').textContent = "";
-	});
-	
-	map.on('click', function(e) {
-	    var features = map.queryRenderedFeatures(e.point, {
-		layers: ['cycletourer-simplified-dstse3-bicycle-no', 'cycletourer-simplified-dstse3-bicycle-yes',
-			 'cycletourer-simplified-dstse3-bicycle-white', 'cycletourer-simplified-dstse3-bicycle-yellow',
-			 'vegvesen-simplified-3pt3m7-no', 'vegvesen-simplified-3pt3m7-yes',
-			 'vegvesen-simplified-3pt3m7-white']
-	    });
-	    
-	    if (!features.length) {
-		return;
-	    }
-	    
-	    var feature = features[0];
-	    var html = "<pre>";
-	    for (var key in feature.properties) {
-		html += key + " = " + feature.properties[key] + "\n";
-	    }
-	    html += "</pre>";
-	    
-	    var popup = new mapboxgl.Popup({ offset: [0, -15] })
-		.setLngLat(feature.geometry.coordinates)
-		.setHTML(html)
-		.setLngLat(feature.geometry.coordinates)
-		.addTo(map);
 	});
       }
 

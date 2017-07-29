@@ -43,7 +43,7 @@ def parse_csv(csvfile, cycle_status):
     >>> from StringIO import StringIO
     >>> f = StringIO('6.244639,59.340839,Osbergtunnelen,", Road - ",13,", Length - ",690m,",Lighting - ",Yes,", Comment -",,", Alt Route - ",Use the old road that runs along the lake side.')
     >>> parse_csv(f, 'Red')
-    [{'comment': u'Alternative route: Use the old road that runs along the lake side', 'road_name': u'13', 'name': u'Osbergtunnelen', 'cycle_status': 'Red', 'lon': 59.340839, 'length': 690, 'lighting': u'Yes', 'lat': 6.244639}]
+    [{'comment': u'Alternative route: Use the old road that runs along the lake side', 'road_name': u'13', 'name': u'Osbergtunnelen', 'cycle_status': 'Red', 'lon': 6.244639, 'length': 690, 'lighting': u'Yes', 'lat': 59.340839}]
     """
     data = list()
     csvreader = unicode_csv_reader(csvfile)

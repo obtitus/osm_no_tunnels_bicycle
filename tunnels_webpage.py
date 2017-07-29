@@ -36,6 +36,36 @@ link_template_comparison = u'<a class="comparison_link" href="{href}"\ntitle="{t
 graphhopper_url = link_template.format(href='https://github.com/graphhopper/graphhopper',
                                        title='graphhoppers github page', text='graphhopper')
 
+footer = """
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+  <footer class="inner">
+    <p class="copyright">This page is maintained by <a href="https://github.com/obtitus">obtitus</a></p>
+    <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    <p class="copyright">Map data &copy;<a href="http://openstreetmap.org">OpenStreetMap</a> contributors,
+      <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a></p>
+    <p class="copyright">Cycletourer website&copy;<a href="http://www.cycletourer.co.uk">cycletourer.co.uk</a></p>
+    <p class="copyright">Statens vegvesen&copy;<a href="https://data.norge.no/nlod/no/1.0">NLOD</a></p>
+  </footer>
+</div>
+"""
+
+header = """
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+  <header class="inner">
+    <a id="forkme_banner" href="https://github.com/obtitus/osm_no_tunnels_bicycle">View on GitHub</a>
+    <h1 id="project_title">Tunnels in Norway to OSM</h1>
+    <h2 id="project_tagline">Tunnels in Norway to OSM: Improving bicycle related tags for Norwegian tunnels</h2>
+    <section id="downloads">
+      <a class="zip_download_link" href="https://github.com/obtitus/osm_no_tunnels_bicycle/zipball/master">
+	Download this project as a .zip file</a>
+      <a class="tar_download_link" href="https://github.com/obtitus/osm_no_tunnels_bicycle/tarball/master">
+	Download this project as a tar.gz file</a>
+    </section>
+  </header>
+</div>
+"""
 def create_pre_tags(dict1, ignore_keys=('category',)):
     tags = '<pre>'
     for key, value in sorted(dict1.items()):
@@ -49,6 +79,8 @@ def write_template(template_input, template_output, **template_kwargs):
     with open_utf8(template_input) as f:
         template = Template(f.read())
 
+    template_kwargs['header'] = template_kwargs.pop('header', header)
+    template_kwargs['footer'] = template_kwargs.pop('footer', footer)
     page = template.render(**template_kwargs)
 
     with open_utf8(template_output, 'w') as output:
@@ -377,10 +409,16 @@ def main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root='.',
          output_html_name='table.html'):
 
      # HACK
+    osm_database = osm_simple
     if mode == 'cycletourer':
         vegvesen_forbud_osm = cycletourer_osm
     if mode != 'vegvesen_cycletourer':
         cycletourer_osm = osm_simple.ways.values()
+        osm_database = None
+
+    # should not be needed, but lets use a copy.
+    vegvesen_forbud_osm = deepcopy(vegvesen_forbud_osm)
+    cycletourer_osm = deepcopy(cycletourer_osm)
     
     # match
     matched_vegvesen_cycletourer, unmatched_vegvesen_cycletourer = match(vegvesen_forbud_osm, cycletourer_osm)
@@ -407,7 +445,7 @@ def main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root='.',
     
     # table
     table_header = keys
-    table = create_table(vegvesen_cycletourer, table_header, osm_database=osm_simple, root=root) # hack
+    table = create_table(vegvesen_cycletourer, table_header, osm_database=osm_database, root=root) # hack
     # table = create_table(vegvesen_forbud_osm, table_header, row_header='Vegvesen')
     # table = create_table(cycletourer_osm, table_header, table=table, row_header='Cycletourer')
     table = sorted(table, key=lambda x: x[1:])
@@ -430,7 +468,8 @@ def main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root='.',
 
     return table_header, table
 
-def main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple, filenames_to_link=None, root='.', **kwargs):
+def main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple, filenames_to_link=None,
+               root='.', delete_old=True, **kwargs):
     if filenames_to_link is None:
         filenames_to_link = []
     kwargs['root'] = root
@@ -439,7 +478,7 @@ def main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple, filenames_to_li
     filename = 'vegvesen_vs_osm.html'
     title = 'Comparing vegvesen.no and openstreetmap.org tunnel data'
     mode = 'vegvesen'
-    main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, delete_old=True,
+    main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, delete_old=delete_old,
          mode=mode, heading = title, output_html_name=filename, **kwargs)
     info += '<p class="comparison_p">%s</p>\n' % link_template_comparison.format(href=filename,
                                                  title=title,

@@ -326,10 +326,13 @@ if __name__ == '__main__':
                         help='Root (working) directory')    
     parser.add_argument('--query_template', default="query_template.xml",
                         help="Optionally specify a overpass query xml file, defaults to query_template.xml")
+    parser.add_argument('--keep_gpx_files', default=False, action='store_true',
+                        help="Speed up by not deleting old gpx files")
     argparse_util.add_verbosity(parser, default=logging.DEBUG)
     
     args = parser.parse_args()
-
+    
+    delete_old_gpx = not(args.keep_gpx_files)
     root = args.root
     openstreetmap_simplified_filename = os.path.join(root, 'output', 'openstreetmap_simplified.osm')
     openstreetmap_raw_filename = os.path.join(root, 'output', 'openstreetmap_raw.osm')
@@ -389,7 +392,9 @@ if __name__ == '__main__':
         print 'cycletourer', item
 
     # for item in table[:10]: print item
-    tunnels_webpage.main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root=root, filenames_to_link=filenames)
+    tunnels_webpage.main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple,
+                               delete_old=delete_old_gpx,
+                               root=root, filenames_to_link=filenames)
     # tunnels_webpage.main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root='.', filenames_to_link=filenames,
     #                      mode='cycletour',
     #                      output_html_name='cycletour_vs_osm.html')
