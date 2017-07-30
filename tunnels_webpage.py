@@ -415,6 +415,7 @@ def main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root='.',
         vegvesen_forbud_osm = cycletourer_osm
     if mode != 'vegvesen_cycletourer':
         cycletourer_osm = osm_simple.ways.values()
+    if mode == 'vegvesen_cycletourer':
         osm_database = None
 
     # should not be needed, but lets use a copy.
