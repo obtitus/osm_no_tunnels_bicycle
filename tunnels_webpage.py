@@ -134,8 +134,8 @@ def exact_match(osm1, osm2, func_get=None, filter_func=None):
         name1 = name1[0]
         if name1 in ('', None):
             continue
-        elif name1 in visited_names:
-            continue
+        # elif name1 in visited_names:
+        #     continue
         else:
             visited_names.add(name1)
         
@@ -171,6 +171,7 @@ def match(osm1, osm2):
         for name_key in match_lists_ref:
             match_list = match_lists_ref[name_key]
             if len(match_list) == 2:
+                logger.debug('multiple identical name matches found for %s resolved to', match_list)
                 # all ok, add to match_lists
                 assert name_key not in match_lists
                 match_lists[name_key] = match_list
