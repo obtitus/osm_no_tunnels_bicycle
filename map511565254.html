@@ -32,36 +32,45 @@
 
   <body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/obtitus/osm_no_tunnels_bicycle">View on GitHub</a>
+    
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+  <header class="inner">
+    <a id="forkme_banner" href="https://github.com/obtitus/osm_no_tunnels_bicycle">View on GitHub</a>
+    <h1 id="project_title">Tunnels in Norway to OSM</h1>
+    <h2 id="project_tagline">Tunnels in Norway to OSM: Improving bicycle related tags for Norwegian tunnels</h2>
+    <section id="downloads">
+      <a class="zip_download_link" href="https://github.com/obtitus/osm_no_tunnels_bicycle/zipball/master">
+	Download this project as a .zip file</a>
+      <a class="tar_download_link" href="https://github.com/obtitus/osm_no_tunnels_bicycle/tarball/master">
+	Download this project as a tar.gz file</a>
+    </section>
+  </header>
+</div>
 
-          <h1 id="project_title">Tunnels in Norway to OSM</h1>
-          <h2 id="project_tagline">Tunnels in Norway to OSM: Improving bicycle related tags for Norwegian tunnels</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/obtitus/osm_no_tunnels_bicycle/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/obtitus/osm_no_tunnels_bicycle/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
+    
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-	  <a id="osm_no_tunnels_bicycle" class="anchor" href="#osm_no_tunnels_bicycle" aria-hidden="true"><span class="octicon octicon-link"></span></a>Map of  </h1>
+	  <a id="osm_no_tunnels_bicycle" class="anchor" href="#osm_no_tunnels_bicycle" aria-hidden="true"><span class="octicon octicon-link"></span></a>Map of Harefosstunnelen 57</h1>
 	
 	Showing 2 auto-routed bicycle routes (using <a href="https://github.com/graphhopper/graphhopper"
 title="graphhoppers github page">graphhopper</a>) between the two ends of the tunnel. Download
-                    gpx file: <a href="map57387716.gpx"
-title="gpx fil">map57387716.gpx</a>. Openstreetmap tags:
-                    <pre>highway = abandoned
+                    gpx file: <a href="map511565254.gpx"
+title="gpx fil">map511565254.gpx</a>. Openstreetmap tags:
+                    <pre>bicycle = yes
+highway = primary
+layer = -1
+maxheight = 4.5
+maxspeed = 80
+name = Harefosstunnelen
+ref = 57
+tunnel = yes
 </pre>
                     
 	
-	<section id="demo" class="gpx" data-gpx-source="map57387716.gpx" data-map-target="demo-map">
+    <section id="demo" class="gpx" data-gpx-source="map511565254.gpx" data-osm-url-api="https://www.openstreetmap.org/api/0.6/way/511565254/full" data-map-target="demo-map">
 	  <header>
             <h3>Loading...</h3>
             <span class="start"></span>
@@ -75,16 +84,18 @@ title="gpx fil">map57387716.gpx</a>. Openstreetmap tags:
     </div>
 
     
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">This page is maintained by <a href="https://github.com/obtitus">obtitus</a></p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-        <p class="copyright">Map data &copy;<a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a></p>
-	<p class="copyright">Cycletourer website&copy;<a href="http://www.cycletourer.co.uk">cycletourer.co.uk</a></p>
-	<p class="copyright">Statens vegvesen&copy;<a href="https://data.norge.no/nlod/no/1.0">NLOD</a></p>
-      </footer>
-    </div>
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+  <footer class="inner">
+    <p class="copyright">This page is maintained by <a href="https://github.com/obtitus">obtitus</a></p>
+    <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    <p class="copyright">Map data &copy;<a href="http://openstreetmap.org">OpenStreetMap</a> contributors,
+      <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a></p>
+    <p class="copyright">Cycletourer website&copy;<a href="http://www.cycletourer.co.uk">cycletourer.co.uk</a></p>
+    <p class="copyright">Statens vegvesen&copy;<a href="https://data.norge.no/nlod/no/1.0">NLOD</a></p>
+  </footer>
+</div>
+
 
     <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js"></script>
@@ -93,9 +104,14 @@ title="gpx fil">map57387716.gpx</a>. Openstreetmap tags:
     function display_gpx(elt) {
         if (!elt) return;
 	
-        var url = elt.getAttribute('data-gpx-source');
+        //var url = elt.getAttribute('data-gpx-source');
         var mapid = elt.getAttribute('data-map-target');
-        if (!url || !mapid) return;
+	var osm_url = elt.getAttribute('data-osm-url-api');
+        //if (!url || !mapid) return;
+	if (!mapid) {
+	    _t('h3').textContent = "";
+	    return;
+	}
 	
         function _t(t) { return elt.getElementsByTagName(t)[0]; }
         function _c(c) { return elt.getElementsByClassName(c)[0]; }
@@ -109,62 +125,67 @@ title="gpx fil">map57387716.gpx</a>. Openstreetmap tags:
 	    zoom: 5
 	});
 
+	// if ((typeof osm_url !== 'undefined') && (osm_url !== null)) {
+	//     $.ajax({
+	// 	url: osm_url, // on the form: "https://www.openstreetmap.org/api/0.6/[node/way/relation]/<id>[/full]"
+	// 	dataType: "xml",
+	// 	success: function (xml) {
+	// 	    var layer = new L.OSM.DataLayer(xml).addTo(map);
+	// 	    //map.fitBounds(layer.getBounds(), {maxZoom:17});
+	// 	}
+	//     });
+	// }
+
+	map.on('click', function(e) {
+	    var features = map.queryRenderedFeatures(e.point, {
+		layers: ['cycletourer-simplified-dstse3-bicycle-no', 'cycletourer-simplified-dstse3-bicycle-yes',
+			 'cycletourer-simplified-dstse3-bicycle-white', 'cycletourer-simplified-dstse3-bicycle-yellow',
+			 'vegvesen-simplified-3pt3m7-no', 'vegvesen-simplified-3pt3m7-yes',
+			 'vegvesen-simplified-3pt3m7-white']
+	    });
+	    
+	    if (!features.length) {
+		return;
+	    }
+	    
+	    var feature = features[0];
+	    var html = "<pre>";
+	    for (var key in feature.properties) {
+		html += key + " = " + feature.properties[key] + "\n";
+	    }
+	    html += "</pre>";
+	    
+	    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+		.setLngLat(feature.geometry.coordinates)
+		.setHTML(html)
+		.setLngLat(feature.geometry.coordinates)
+		.addTo(map);
+	});
+
 	var data = {
     "features": [
         {
             "geometry": {
                 "coordinates": [
                     [
-                        18.956613,
-                        69.656062
+                        5.381616,
+                        61.254123
                     ],
                     [
-                        18.956617,
-                        69.656248
+                        5.381605,
+                        61.253855
                     ],
                     [
-                        18.956464,
-                        69.656538
+                        5.382377,
+                        61.253277
                     ],
                     [
-                        18.957092,
-                        69.656813
+                        5.383235,
+                        61.25303
                     ],
                     [
-                        18.957992,
-                        69.657282
-                    ],
-                    [
-                        18.958227,
-                        69.657447
-                    ],
-                    [
-                        18.95877,
-                        69.657763
-                    ],
-                    [
-                        18.959055,
-                        69.657924
-                    ],
-                    [
-                        18.959175,
-                        69.657883
-                    ],
-                    [
-                        18.959237,
-                        69.657807
-                    ],
-                    [
-                        18.959154,
-                        69.657456
-                    ],
-                    [
-                        18.958868,
-                        69.656804
-                    ],
-                    [
-                        18.957735,
-                        69.65576
+                        5.383892,
+                        61.253067
                     ]
                 ],
                 "type": "LineString"
@@ -176,32 +197,24 @@ title="gpx fil">map57387716.gpx</a>. Openstreetmap tags:
             "geometry": {
                 "coordinates": [
                     [
-                        18.957735,
-                        69.65576
+                        5.383892,
+                        61.253067
                     ],
                     [
-                        18.957707,
-                        69.655734
+                        5.383235,
+                        61.25303
                     ],
                     [
-                        18.957067,
-                        69.654849
+                        5.382377,
+                        61.253277
                     ],
                     [
-                        18.956781,
-                        69.654962
+                        5.381605,
+                        61.253855
                     ],
                     [
-                        18.956777,
-                        69.655254
-                    ],
-                    [
-                        18.956602,
-                        69.655603
-                    ],
-                    [
-                        18.956613,
-                        69.656062
+                        5.381616,
+                        61.254123
                     ]
                 ],
                 "type": "LineString"
@@ -212,6 +225,11 @@ title="gpx fil">map57387716.gpx</a>. Openstreetmap tags:
     ],
     "type": "FeatureCollection"
 };
+        if (!data) {
+	    _t('h3').textContent = "";
+	    return;
+	}
+	
 	map.on("load", function() {
 	    console.log("map loaded")
 	    map.addSource("gpx-tracks",
@@ -237,32 +255,6 @@ title="gpx fil">map57387716.gpx</a>. Openstreetmap tags:
 	    var southWest = [bounds['_southWest']['lng'], bounds['_southWest']['lat']]
 	    map.fitBounds([southWest, northEast]);
             _t('h3').textContent = "";
-	});
-	
-	map.on('click', function(e) {
-	    var features = map.queryRenderedFeatures(e.point, {
-		layers: ['cycletourer-simplified-dstse3-bicycle-no', 'cycletourer-simplified-dstse3-bicycle-yes',
-			 'cycletourer-simplified-dstse3-bicycle-white', 'cycletourer-simplified-dstse3-bicycle-yellow',
-			 'vegvesen-simplified-3pt3m7-no', 'vegvesen-simplified-3pt3m7-yes',
-			 'vegvesen-simplified-3pt3m7-white']
-	    });
-	    
-	    if (!features.length) {
-		return;
-	    }
-	    
-	    var feature = features[0];
-	    var html = "<pre>";
-	    for (var key in feature.properties) {
-		html += key + " = " + feature.properties[key] + "\n";
-	    }
-	    html += "</pre>";
-	    
-	    var popup = new mapboxgl.Popup({ offset: [0, -15] })
-		.setLngLat(feature.geometry.coordinates)
-		.setHTML(html)
-		.setLngLat(feature.geometry.coordinates)
-		.addTo(map);
 	});
       }
 

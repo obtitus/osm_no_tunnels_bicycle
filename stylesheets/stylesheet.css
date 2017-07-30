@@ -125,6 +125,17 @@ footer a {
   text-decoration: underline;
 }
 
+/* custom */
+.map_list {
+    width: 512px;
+    padding: 10px 10px 10px 10px;
+    /* position: relative; */
+    /* float: left; */
+    background: #E1E1E1;
+    box-shadow: 0 4px 2px -2px rgba(0,0,0,0.4);
+    border-radius: 3px;
+}
+
 /* fixme: there is probably a cleaner way of implementing these two styles */
 .comparison_link {
   padding: 10px 10px 10px 10px;
