@@ -42,7 +42,7 @@
 	
 	{{info}}
 	
-	<section id="demo" class="gpx" data-gpx-source="{{map_id}}.gpx" data-map-target="demo-map">
+    <section id="demo" class="gpx" data-gpx-source="{{map_id}}.gpx" data-osm-url-api={{osm_url_api}} data-map-target="demo-map">
 	  <header>
             <h3>Loading...</h3>
             <span class="start"></span>
@@ -64,9 +64,14 @@
     function display_gpx(elt) {
         if (!elt) return;
 	
-        var url = elt.getAttribute('data-gpx-source');
+        //var url = elt.getAttribute('data-gpx-source');
         var mapid = elt.getAttribute('data-map-target');
-        if (!url || !mapid) return;
+	var osm_url = elt.getAttribute('data-osm-url-api');
+        //if (!url || !mapid) return;
+	if (!mapid) {
+	    _t('h3').textContent = "";
+	    return;
+	}
 	
         function _t(t) { return elt.getElementsByTagName(t)[0]; }
         function _c(c) { return elt.getElementsByClassName(c)[0]; }
@@ -79,6 +84,17 @@
 	    center: [20, 65],
 	    zoom: 5
 	});
+
+	// if ((typeof osm_url !== 'undefined') && (osm_url !== null)) {
+	//     $.ajax({
+	// 	url: osm_url, // on the form: "https://www.openstreetmap.org/api/0.6/[node/way/relation]/<id>[/full]"
+	// 	dataType: "xml",
+	// 	success: function (xml) {
+	// 	    var layer = new L.OSM.DataLayer(xml).addTo(map);
+	// 	    //map.fitBounds(layer.getBounds(), {maxZoom:17});
+	// 	}
+	//     });
+	// }
 
 	map.on('click', function(e) {
 	    var features = map.queryRenderedFeatures(e.point, {
@@ -107,7 +123,10 @@
 	});
 
 	var data = {{geojson}};
-        if (!data) return;
+        if (!data) {
+	    _t('h3').textContent = "";
+	    return;
+	}
 	
 	map.on("load", function() {
 	    console.log("map loaded")

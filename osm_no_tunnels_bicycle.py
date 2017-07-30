@@ -393,6 +393,7 @@ if __name__ == '__main__':
 
     # for item in table[:10]: print item
     tunnels_webpage.main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple,
+                               osm_database = osm,
                                delete_old=delete_old_gpx,
                                root=root, filenames_to_link=filenames)
     # tunnels_webpage.main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root='.', filenames_to_link=filenames,

@@ -12,6 +12,7 @@
       <has-kv k="highway" modv="" v=""/>
       <has-kv k="highway" modv="not" v="service"/> 
       <has-kv k="highway" modv="not" v="construction"/>
+      <has-kv k="highway" modv="not" v="abandoned"/>
       <has-kv k="highway" modv="not" v="proposed"/>
       <has-kv k="highway" modv="not" v="footway"/>
       <has-kv k="highway" modv="not" v="cycleway"/>
@@ -25,8 +26,9 @@
     <query into="_" type="way">
       <has-kv k="tunnel" modv="" v=""/>
       <has-kv k="highway" modv="" v=""/>
-      <has-kv k="highway" modv="not" v="service"/>       
+      <has-kv k="highway" modv="not" v="service"/>
       <has-kv k="highway" modv="not" v="construction"/>
+      <has-kv k="highway" modv="not" v="abandoned"/>
       <has-kv k="highway" modv="not" v="proposed"/>
       <has-kv k="highway" modv="not" v="footway"/>
       <has-kv k="highway" modv="not" v="cycleway"/>
@@ -40,8 +42,9 @@
     <query into="_" type="relation">
       <has-kv k="tunnel" modv="" v=""/>
       <has-kv k="highway" modv="" v=""/>
-      <has-kv k="highway" modv="not" v="service"/>       
+      <has-kv k="highway" modv="not" v="service"/>
       <has-kv k="highway" modv="not" v="construction"/>
+      <has-kv k="highway" modv="not" v="abandoned"/>      
       <has-kv k="highway" modv="not" v="proposed"/>
       <has-kv k="highway" modv="not" v="footway"/>
       <has-kv k="highway" modv="not" v="cycleway"/>

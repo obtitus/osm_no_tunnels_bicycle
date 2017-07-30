@@ -324,6 +324,8 @@ def create_table(osm, header, row_header='', table=None, osm_database=None, root
                 graphhopper_tracks, graphhopper_geojson = tunnels_graphhopper.main(output_filename=graphhopper_gpx,
                                                                                    start=start, end=end)
 
+                if osm_url_api is None: osm_url_api = 'null'
+                
                 if len(graphhopper_tracks) != 0:
                     # map page, fixme: support map-page for non-ways?
                     template_map = os.path.join(root, 'template', 'map.html')
@@ -338,7 +340,7 @@ def create_table(osm, header, row_header='', table=None, osm_database=None, root
                     %s
                     ''' % (len(graphhopper_tracks), graphhopper_url, gpx_url_link, tags)
                     write_template(template_map, output_map, map_id=map_id, tunnel_name=tunnel_name, info=info,
-                                   geojson=graphhopper_geojson)
+                                   geojson=graphhopper_geojson, osm_url_api=osm_url_api)
 
                     veier = 'vei'
                     if len(graphhopper_tracks) > 1:
@@ -403,14 +405,15 @@ def simplify_name_key(osm):
                 if key != 'tunnel:name':
                     del item.tags[key]
     
-def main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root='.', 
+def main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root='.',
+         osm_database=None,
          mode='vegvesen',
          heading='Comparing vegvesen and openstreetmap.org tunnel data',
          delete_old=False,
          output_html_name='table.html'):
 
      # HACK
-    osm_database = osm_simple
+    #osm_database = osm_simple
     if mode == 'cycletourer':
         vegvesen_forbud_osm = cycletourer_osm
     if mode != 'vegvesen_cycletourer':
@@ -475,8 +478,63 @@ def main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple, filenames_to_li
     if filenames_to_link is None:
         filenames_to_link = []
     kwargs['root'] = root
+    info = ''
 
-    info = '<p>Pick a comparison page below:</p>\n'
+    # 'Main' map page
+    template_map = os.path.join(root, 'template', 'map.html')
+    output_map = os.path.join(root, 'output', 'map.html')
+    info += '<p class="comparison_p">%s</p>\n' % link_template_comparison.format(href="map.html",
+                                                 title="",
+                                                 text='MAP')
+    
+    # INFO
+    cycletourer_contact_form = link_template.format(href='http://www.cycletourer.co.uk/forms/tunnel_comment_form.shtml',
+                                                               title='For additional comments to cycletourer.co.uk',
+                                                               text='contact form')
+    road_import_norway = link_template.format(href='http://wiki.openstreetmap.org/wiki/Import/Catalogue/Road_import_(Norway)',
+                                              title='description of the Elveg import',
+                                              text='Road import Norway')
+    note_osm = link_template.format(href='http://www.openstreetmap.org/note/new',
+                                    title='add a note on openstreetmap.org',
+                                    text='note')
+    marker_description = [('marker-icon-green-vegvesen', 'Vegvesen.no: legal to bicycle, use <code>bicycle=yes</code>'),
+                          ('marker-icon-red-vegvesen', 'Vegvesen.no: illegal to bicycle, use <code>bicycle=no</code>'),
+                          ('marker-icon-white-vegvesen', 'Vegvesen.no: legal status unkown, api lacks key <code>Sykkelforbud</code>'),
+                          ('marker-icon-green', 'Considered by cycletourer.co.uk to be: open to cyclists and considered to be OK to cycle through.'),
+                          ('marker-icon-red', 'Considered by cycletourer.co.uk to be: officially prohibited to cyclists by vegvesen.no or too dangerous to cycle through'),
+                          ('marker-icon-yellow', 'Considered by cycletourer.co.uk to be: open to cyclists but caution required'),
+                          ('marker-icon-white', 'Tunnel known of by cycletourer.co.uk but currently without any information, %s' % (cycletourer_contact_form))]
+
+    info_map = '''<p>The map below shows simplified tunnel data from both vegvesen.no and cycletourer.co.uk.</p>
+    <div class=map_list> Map legend:
+    <ul>
+    '''
+    for icon, description in marker_description:
+        style = ''
+        if 'white' in icon:
+            style = 'style="background-color:black;"'
+        info_map += '<li><img src="images/%s.svg" %s width=30px/> %s</li>' % (icon, style, description)
+    info_map += """</ul>
+    <p>All markers on the map is clickable, showing a set of suggested openstreetmap tags 
+    based on the underlying dataset. 
+    Direct import discouraged, especially the note:class:bicycle and class:bicycle tags.</p></div>"""
+
+    # Improve osm notes
+    info_map += """<div class=map_list>Improve OSM by:
+    <ul>
+    <li>Adding missing tunnels and missing alternative routes, see %s (only for experienced Norwegian mappers)</li>
+    <li>Non experienced mappers can consider adding a %s on openstreetmap.org</li>
+    <li>Improve tagging by correctly setting <code>bicycle, lit, tunnel:name, ...</code> </li>
+    <li>Consider using <code>class:bicycle</code>  either positively on alternative routes or negatively on
+    <code>bicycle=yes</code> tunnels</li>
+    </ul></div>
+    """ % (road_import_norway, note_osm)
+                               
+    write_template(template_map, output_map, map_id="main", tunnel_name="all tunnels in Norway", info=info_map,
+                   geojson="null", osm_url_api="null")
+
+    
+    info += '<p>Pick a comparison page below:</p>\n'
     filename = 'vegvesen_vs_osm.html'
     title = 'Comparing vegvesen.no and openstreetmap.org tunnel data'
     mode = 'vegvesen'
@@ -502,6 +560,7 @@ def main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple, filenames_to_li
     info += '<p class="comparison_p">%s</p>\n' % link_template_comparison.format(href=filename,
                                                  title=title,
                                                  text='vegvesen.no VS cycletourer.co.uk')
+    
     # main page
     template_index = os.path.join(root, 'template', 'index.html')
     output_index = os.path.join(root, 'output', 'index.html')
