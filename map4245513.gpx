@@ -1,87 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/0" version="1.0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd" creator="Graphhopper version 0.9.0">
-<trk>
-<name>GraphHopper Track</name>
-<type/>
-<desc/>
-<trkseg>
-<trkpt lat="58.138405" lon="7.070318">
-<time>2018-03-30T09:09:36Z</time></trkpt>
-<trkpt lat="58.138355" lon="7.070257">
-<time>2018-03-30T09:09:40Z</time></trkpt>
-<trkpt lat="58.138339" lon="7.070259">
-<time>2018-03-30T09:09:41Z</time></trkpt>
-<trkpt lat="58.138294" lon="7.07025">
-<time>2018-03-30T09:09:45Z</time></trkpt>
-<trkpt lat="58.138264" lon="7.070237">
-<time>2018-03-30T09:09:47Z</time></trkpt></trkseg></trk>
-<trk>
-<name>GraphHopper Track</name>
-<type/>
-<desc/>
-<trkseg>
-<trkpt lat="58.138264" lon="7.070237">
-<time>2018-03-30T09:09:36Z</time></trkpt>
-<trkpt lat="58.138213" lon="7.07022">
-<time>2018-03-30T09:09:39Z</time></trkpt>
-<trkpt lat="58.138183" lon="7.070203">
-<time>2018-03-30T09:09:41Z</time></trkpt>
-<trkpt lat="58.137693" lon="7.070035">
-<time>2018-03-30T09:10:31Z</time></trkpt>
-<trkpt lat="58.137599" lon="7.070042">
-<time>2018-03-30T09:10:41Z</time></trkpt>
-<trkpt lat="58.137563" lon="7.071518">
-<time>2018-03-30T09:10:58Z</time></trkpt>
-<trkpt lat="58.137587" lon="7.071795">
-<time>2018-03-30T09:11:01Z</time></trkpt>
-<trkpt lat="58.137635" lon="7.071881">
-<time>2018-03-30T09:11:03Z</time></trkpt>
-<trkpt lat="58.138496" lon="7.072079">
-<time>2018-03-30T09:11:22Z</time></trkpt>
-<trkpt lat="58.138651" lon="7.072131">
-<time>2018-03-30T09:11:26Z</time></trkpt>
-<trkpt lat="58.138698" lon="7.071577">
-<time>2018-03-30T09:11:33Z</time></trkpt>
-<trkpt lat="58.138889" lon="7.071136">
-<time>2018-03-30T09:11:41Z</time></trkpt>
-<trkpt lat="58.138494" lon="7.070454">
-<time>2018-03-30T09:11:54Z</time></trkpt>
-<trkpt lat="58.138405" lon="7.070318">
-<time>2018-03-30T09:11:57Z</time></trkpt></trkseg></trk>
-<trk>
-<name>GraphHopper Track</name>
-<type/>
-<desc/>
-<trkseg>
-<trkpt lat="58.138264" lon="7.070237">
-<time>2018-03-30T09:09:36Z</time></trkpt>
-<trkpt lat="58.138213" lon="7.07022">
-<time>2018-03-30T09:09:39Z</time></trkpt>
-<trkpt lat="58.138183" lon="7.070203">
-<time>2018-03-30T09:09:41Z</time></trkpt>
-<trkpt lat="58.137693" lon="7.070035">
-<time>2018-03-30T09:10:31Z</time></trkpt>
-<trkpt lat="58.137599" lon="7.070042">
-<time>2018-03-30T09:10:41Z</time></trkpt>
-<trkpt lat="58.137563" lon="7.071518">
-<time>2018-03-30T09:10:58Z</time></trkpt>
-<trkpt lat="58.137587" lon="7.071795">
-<time>2018-03-30T09:11:01Z</time></trkpt>
-<trkpt lat="58.137635" lon="7.071881">
-<time>2018-03-30T09:11:03Z</time></trkpt>
-<trkpt lat="58.138004" lon="7.071982">
-<time>2018-03-30T09:11:11Z</time></trkpt>
-<trkpt lat="58.13806" lon="7.071967">
-<time>2018-03-30T09:11:12Z</time></trkpt>
-<trkpt lat="58.138349" lon="7.072048">
-<time>2018-03-30T09:11:19Z</time></trkpt>
-<trkpt lat="58.138401" lon="7.071284">
-<time>2018-03-30T09:11:44Z</time></trkpt>
-<trkpt lat="58.138361" lon="7.071125">
-<time>2018-03-30T09:11:50Z</time></trkpt>
-<trkpt lat="58.13835" lon="7.070866">
-<time>2018-03-30T09:11:58Z</time></trkpt>
-<trkpt lat="58.138494" lon="7.070454">
-<time>2018-03-30T09:12:14Z</time></trkpt>
-<trkpt lat="58.138405" lon="7.070318">
-<time>2018-03-30T09:12:21Z</time></trkpt></trkseg></trk></gpx>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:gh="https://graphhopper.com/public/schema/gpx/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="Graphhopper version 0.9.0">
+  <metadata>
+    <copyright author="OpenStreetMap contributors">
+    </copyright>
+    <link href="http://graphhopper.com">
+      <text>GraphHopper GPX</text>
+    </link>
+    <time>2022-07-07T15:26:46Z</time>
+  </metadata>
+  <trk>
+    <name>GraphHopper Track</name>
+    <trkseg>
+      <trkpt lat="58.138405" lon="7.070318">
+        <time>2022-07-07T15:26:46Z</time>
+      </trkpt>
+      <trkpt lat="58.138355" lon="7.070257">
+        <time>2022-07-07T15:26:50Z</time>
+      </trkpt>
+      <trkpt lat="58.138339" lon="7.070259">
+        <time>2022-07-07T15:26:51Z</time>
+      </trkpt>
+      <trkpt lat="58.138294" lon="7.07025">
+        <time>2022-07-07T15:26:55Z</time>
+      </trkpt>
+      <trkpt lat="58.138264" lon="7.070237">
+        <time>2022-07-07T15:26:57Z</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+  <trk>
+    <name>GraphHopper Track</name>
+    <trkseg>
+      <trkpt lat="58.138264" lon="7.070237">
+        <time>2022-07-07T15:26:46Z</time>
+      </trkpt>
+      <trkpt lat="58.138213" lon="7.07022">
+        <time>2022-07-07T15:26:49Z</time>
+      </trkpt>
+      <trkpt lat="58.138183" lon="7.070203">
+        <time>2022-07-07T15:26:52Z</time>
+      </trkpt>
+      <trkpt lat="58.137693" lon="7.070035">
+        <time>2022-07-07T15:27:41Z</time>
+      </trkpt>
+      <trkpt lat="58.137599" lon="7.070042">
+        <time>2022-07-07T15:27:51Z</time>
+      </trkpt>
+      <trkpt lat="58.137563" lon="7.071518">
+        <time>2022-07-07T15:28:08Z</time>
+      </trkpt>
+      <trkpt lat="58.137587" lon="7.071795">
+        <time>2022-07-07T15:28:11Z</time>
+      </trkpt>
+      <trkpt lat="58.137635" lon="7.071881">
+        <time>2022-07-07T15:28:13Z</time>
+      </trkpt>
+      <trkpt lat="58.138496" lon="7.072079">
+        <time>2022-07-07T15:28:32Z</time>
+      </trkpt>
+      <trkpt lat="58.138651" lon="7.072131">
+        <time>2022-07-07T15:28:36Z</time>
+      </trkpt>
+      <trkpt lat="58.138698" lon="7.071577">
+        <time>2022-07-07T15:28:43Z</time>
+      </trkpt>
+      <trkpt lat="58.138889" lon="7.071136">
+        <time>2022-07-07T15:28:51Z</time>
+      </trkpt>
+      <trkpt lat="58.138494" lon="7.070454">
+        <time>2022-07-07T15:29:04Z</time>
+      </trkpt>
+      <trkpt lat="58.138405" lon="7.070318">
+        <time>2022-07-07T15:29:07Z</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+  <trk>
+    <name>GraphHopper Track</name>
+    <trkseg>
+      <trkpt lat="58.138264" lon="7.070237">
+        <time>2022-07-07T15:26:46Z</time>
+      </trkpt>
+      <trkpt lat="58.138213" lon="7.07022">
+        <time>2022-07-07T15:26:49Z</time>
+      </trkpt>
+      <trkpt lat="58.138183" lon="7.070203">
+        <time>2022-07-07T15:26:52Z</time>
+      </trkpt>
+      <trkpt lat="58.137693" lon="7.070035">
+        <time>2022-07-07T15:27:41Z</time>
+      </trkpt>
+      <trkpt lat="58.137599" lon="7.070042">
+        <time>2022-07-07T15:27:51Z</time>
+      </trkpt>
+      <trkpt lat="58.137563" lon="7.071518">
+        <time>2022-07-07T15:28:08Z</time>
+      </trkpt>
+      <trkpt lat="58.137587" lon="7.071795">
+        <time>2022-07-07T15:28:12Z</time>
+      </trkpt>
+      <trkpt lat="58.137635" lon="7.071881">
+        <time>2022-07-07T15:28:13Z</time>
+      </trkpt>
+      <trkpt lat="58.138004" lon="7.071982">
+        <time>2022-07-07T15:28:21Z</time>
+      </trkpt>
+      <trkpt lat="58.13806" lon="7.071967">
+        <time>2022-07-07T15:28:23Z</time>
+      </trkpt>
+      <trkpt lat="58.138349" lon="7.072048">
+        <time>2022-07-07T15:28:29Z</time>
+      </trkpt>
+      <trkpt lat="58.138401" lon="7.071284">
+        <time>2022-07-07T15:28:54Z</time>
+      </trkpt>
+      <trkpt lat="58.138361" lon="7.071125">
+        <time>2022-07-07T15:29:00Z</time>
+      </trkpt>
+      <trkpt lat="58.13835" lon="7.070866">
+        <time>2022-07-07T15:29:08Z</time>
+      </trkpt>
+      <trkpt lat="58.138494" lon="7.070454">
+        <time>2022-07-07T15:29:24Z</time>
+      </trkpt>
+      <trkpt lat="58.138405" lon="7.070318">
+        <time>2022-07-07T15:29:32Z</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>
