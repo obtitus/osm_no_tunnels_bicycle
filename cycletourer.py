@@ -5,7 +5,7 @@ import csv
 import logging
 logger = logging.getLogger('osm_no_tunnels_bicycle.cycletourer')
 
-import osmapis
+from utility_to_osm import osmapis
 
 # this project
 import util
@@ -13,16 +13,17 @@ import util
 def unicode_csv_reader(utf8_data, dialect=csv.excel, **kwargs):
     csv_reader = csv.reader(utf8_data, dialect=dialect, **kwargs)
     for row in csv_reader:
-        yield [unicode(cell, 'utf-8') for cell in row]
+        yield row
+        #yield [unicode(cell, 'utf-8') for cell in row]
 
 def cleanup_string(string):
     """
     >>> cleanup_string(u', Road - ')
-    u'road'
+    'road'
     >>> cleanup_string(u',Lighting - ')
-    u'lighting'
+    'lighting'
     >>> cleanup_string(u', Length - ')
-    u'length'
+    'length'
     >>> cleanup_string(None)
     ''
     >>> cleanup_string(' LIT ..')
@@ -40,7 +41,7 @@ def cleanup_string(string):
 
 def parse_csv(csvfile, cycle_status):
     """
-    >>> from StringIO import StringIO
+    >>> from io import StringIO
     >>> f = StringIO('6.244639,59.340839,Osbergtunnelen,", Road - ",13,", Length - ",690m,",Lighting - ",Yes,", Comment -",,", Alt Route - ",Use the old road that runs along the lake side.')
     >>> parse_csv(f, 'Red')
     [{'comment': u'Alternative route: Use the old road that runs along the lake side', 'road_name': u'13', 'name': u'Osbergtunnelen', 'cycle_status': 'Red', 'lon': 6.244639, 'length': 690, 'lighting': u'Yes', 'lat': 59.340839}]
@@ -60,7 +61,7 @@ def parse_csv(csvfile, cycle_status):
         name = item[2]
 
         #print item
-        clean_item = map(cleanup_string, item) # avoid having to search for ', Road - '
+        clean_item = list(map(cleanup_string, item)) # avoid having to search for ', Road - '
         road_name = get_value_from_list(clean_item, item, 'road')
         lighting = get_value_from_list(clean_item, item, 'lighting')
         comment = get_value_from_list(clean_item, item, 'comment')
@@ -97,7 +98,7 @@ def get_csv_data(root_csv, colors=['Green', 'Red', 'Amber', 'White']):
     data = list()
     for color in colors:
         filename = os.path.join(root_csv, 'Tunnels %s.csv' % color)
-        with open(filename, 'rb') as f:
+        with open(filename, 'r') as f:
             d = parse_csv(f, cycle_status=color)
             data.extend(d)
     return data

@@ -7,14 +7,13 @@ import geojson
 import logging
 logger = logging.getLogger('osm_no_tunnels_bicycle')
 
-# hack
-sys.path.append('../../barnehagefakta_osm')
-import conflate_osm
-import gentle_requests
-import osmapis
-import argparse_util
+from utility_to_osm import file_util
+from utility_to_osm import overpass_helper
+from utility_to_osm import gentle_requests
+from utility_to_osm import osmapis
+from utility_to_osm import argparse_util
 
-import elveg2osm
+import elveg2osm_helper
 
 # this project
 import util
@@ -57,7 +56,7 @@ def get_vegvesen_json(url=None, old_age_days=7, cache_dir='.'):
     filename += '.json'
     filename = os.path.join(cache_dir, filename)
         
-    cached, outdated = conflate_osm.file_util.cached_file(filename, old_age_days=old_age_days)
+    cached, outdated = file_util.cached_file(filename, old_age_days=old_age_days)
     if cached is not None and not(outdated):
         #print 'Using overpass responce stored as "%s". Delete this file if you want an updated version' % filename
         logger.debug('using cached %s', url)
@@ -78,7 +77,7 @@ def get_vegvesen_json(url=None, old_age_days=7, cache_dir='.'):
                                "\n\tcontent: " + str( response.content) +
                                "\n\tcontent-type: " + response.headers['content-type'] )
 
-        conflate_osm.file_util.write_file(filename, content)
+        file_util.write_file(filename, content)
 
     # next page?
     soup = json.loads(content)
@@ -138,7 +137,7 @@ def parse_vegvesen(json_soup):
     wgs84 = (None, None)
     if reg:
         try:
-            utm33 = map(float, reg.groups())
+            utm33 = list(map(float, reg.groups()))
             projection = pyproj.Proj(init='epsg:%s' % srid)
             wgs84 = projection(utm33[0], utm33[1], inverse=True)
         except ValueError:
@@ -159,7 +158,7 @@ def convert_vegvesen_to_osm(item):
         bicycle = 'no'
     elif bicycle == 'nei':
         bicycle = 'yes'
-    elif bicycle is '':
+    elif bicycle == '':
         pass
     else:
         raise ValueError('unexpected bicycle tag "%s"', bicycle)
@@ -198,7 +197,7 @@ def filter_osm_tags(tags):
                  'oneway', 'highway']
                  #'maxspeed', 'highway', 'surface', 'foot', 'oneway']
     #print tags.keys()
-    for key in tags.keys():
+    for key in list(tags.keys()):
         if key in keep_tags:
             continue
 
@@ -239,7 +238,7 @@ def discard_way_and_nodes(osm, way):
     osm.discard(way)
     for node_id in way.nds:
         # make sure we are not deleting a shared node
-        for way_id, way in osm.ways.iteritems():
+        for way_id, way in osm.ways.items():
             if node_id in way.nds: break
         else:
             try:
@@ -254,18 +253,18 @@ def merge_oneways(osm):
 
     # get all oneways
     oneways = dict()
-    for way_id, way in osm.ways.iteritems():
+    for way_id, way in osm.ways.items():
         if way.tags.get('oneway') in ('yes', '1', '-1', 'reverse'):
             oneways[way_id] = way
 
     logger.info('there are %s oneways tunnels', len(oneways))
     # get all identically tagged
     discarded = set()
-    for way1_id, way1 in oneways.iteritems():
+    for way1_id, way1 in oneways.items():
         if way1_id in discarded: continue
         # find identical
         candidates = list()
-        for way2_id, way2 in oneways.iteritems():
+        for way2_id, way2 in oneways.items():
             if way1_id == way2_id: continue
             if way2_id in discarded: continue
             
@@ -349,7 +348,7 @@ if __name__ == '__main__':
 
     cycletourer_data = cycletourer.get_csv_data(args.cycletourer_folder)
     write_json(cycletourer_raw_filename, cycletourer_data)
-    cycletourer_osm = map(cycletourer.convert_to_osm, cycletourer_data)
+    cycletourer_osm = list(map(cycletourer.convert_to_osm, cycletourer_data))
     write_osm(cycletourer_simplified_filename, cycletourer_osm)
     write_geojson(cycletourer_simplified_filename.replace('.osm', '.geojson'), cycletourer_osm)
     # for item in cycletourer_osm[:10]:
@@ -359,15 +358,15 @@ if __name__ == '__main__':
     # get query
     query = get_xml_query(args.query_template) # fixme: get bounding_box from gpx files?
     # call overpass
-    osm = conflate_osm.overpass_xml(xml=query, conflate_cache_filename=openstreetmap_raw_filename)
+    osm = overpass_helper.overpass_xml(xml=query, cache_filename=openstreetmap_raw_filename)
     # simplify
     osm_simple = simplify_osm(osm)
     merge_way_ids = osm.ways.keys() # simplify all ways
-    elveg2osm.merge_equal(osm_simple, merge_way_ids) # join touching segments
+    elveg2osm_helper.merge_equal(osm_simple, merge_way_ids) # join touching segments
     merge_oneways(osm_simple)                        # merge tunnels that are drawn as separate oneways
     
     osm_simple.save(openstreetmap_simplified_filename)
-    osm_simple_list = osm_simple.ways.values() # fixme: support nodes as well?
+    osm_simple_list = list(osm_simple.ways.values()) # fixme: support nodes as well?
     #merge_osm()
     #print osm
     # exit(1)
@@ -378,18 +377,18 @@ if __name__ == '__main__':
     pprint(vegvesen_objekter[0])
     vegvesen_forbud = map(parse_vegvesen, vegvesen_objekter)
     # fixme: divide by fylke?
-    vegvesen_forbud_osm = map(convert_vegvesen_to_osm, vegvesen_forbud)
+    vegvesen_forbud_osm = list(map(convert_vegvesen_to_osm, vegvesen_forbud))
     write_osm(vegvesen_simplified_filename, vegvesen_forbud_osm)
     write_geojson(vegvesen_simplified_filename.replace('.osm', '.geojson'), vegvesen_forbud_osm)
 
     for item in osm_simple_list[:2]:
-        print 'osm', item
+        print('osm', item)
     
     for item in vegvesen_forbud_osm[:2]:
-        print 'vegvesen', item
+        print('vegvesen', item)
 
     for item in cycletourer_osm[:2]:
-        print 'cycletourer', item
+        print('cycletourer', item)
 
     # for item in table[:10]: print item
     tunnels_webpage.main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple,

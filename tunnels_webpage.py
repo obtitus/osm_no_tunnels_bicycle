@@ -15,17 +15,18 @@ import logging
 logger = logging.getLogger('osm_no_tunnels_bicycle.tunnels_webpage')
 
 # non-standard imports
-import osmapis
+from utility_to_osm import osmapis
+from utility_to_osm import htmldiff
 from jinja2 import Template
-from htmldiff import htmldiff
 def my_htmldiff(a, b):
     # """
     # >>> my_htmldiff('yes', 'no')
     # '<span class="delete">yes</span><span class="insert">no</span>'
     # """
-    d = htmldiff.HTMLMatcher(a.encode('utf8'), b.encode('utf8'),
+    #a.encode('utf8'), b.encode('utf8'),
+    d = htmldiff.HTMLMatcher(a, b,
                              accurate_mode=True)
-    return d.htmlDiff(addStylesheet=False).decode('utf8')
+    return d.htmlDiff(addStylesheet=False)#.decode('utf8')
 
 # this project
 import util
@@ -151,7 +152,7 @@ def match(osm1, osm2):
     match_lists = exact_match(osm1, osm2)
     logger.info('Found %s exact name matches (with possible duplicate matching)' % len(match_lists))
     
-    for name in match_lists.keys():
+    for name in list(match_lists.keys()):
         match_list = match_lists[name]
         if len(match_list) == 2:
             continue # all ok, exactly 2 matching names
@@ -234,14 +235,14 @@ def flatten(matched_dict, unmatched_list):
     return ret, categories
 
 def diff(matched_dict):
-    for name, match_list in matched_dict.iteritems():
+    for name, match_list in matched_dict.items():
         assert len(match_list) == 2
 
         # bicycle the same?
         bicycle1 = match_list[0].tags.get('bicycle', '')
         bicycle2 = match_list[1].tags.get('bicycle', '')
         if bicycle1 != '' and bicycle2 != '' and bicycle1 != bicycle2:
-            for item_ix in xrange(len(match_list)):
+            for item_ix in range(len(match_list)):
                 match_list[item_ix] = add_to_category(match_list[item_ix], 'matched_diff') # important: makes a copy!
 
             match_list[0].tags['bicycle'] = my_htmldiff(bicycle2, bicycle1)
@@ -350,7 +351,7 @@ def create_table(osm, header, row_header='', table=None, osm_database=None, root
                     links += link_template.format(href=href, title=title, text=text)
                     links += ' ' + link_template.format(href=gpx_url, title='gpx fil med graphhopper tracks', text='gpx') + '\n'
                 else:
-                    logger.warning('Consider removing (short?) tunnel %s', way_osm)
+                    logger.warning('No graphhopper track found: Consider filtering (short?) tunnel %s', way_osm)
                     
         lat = item.attribs.get('lat', '')
         lon = item.attribs.get('lon', '')
@@ -393,7 +394,7 @@ def create_table(osm, header, row_header='', table=None, osm_database=None, root
 
 def simplify_name_key(osm):
     # fixme: make this more clever
-    for item_ix in xrange(len(osm)):
+    for item_ix in range(len(osm)):
         item = osm[item_ix]
         name, name_keys = get_name_list(item.tags, include_key=True)
         name = set(name)
@@ -421,9 +422,9 @@ def main(vegvesen_forbud_osm, cycletourer_osm, osm_simple, root='.',
     if mode == 'vegvesen_cycletourer':
         osm_database = None
 
-    # should not be needed, but lets use a copy.
-    vegvesen_forbud_osm = deepcopy(vegvesen_forbud_osm)
-    cycletourer_osm = deepcopy(cycletourer_osm)
+    # # should not be needed, but lets use a copy.
+    # vegvesen_forbud_osm = deepcopy(vegvesen_forbud_osm)
+    # cycletourer_osm = deepcopy(cycletourer_osm)
     
     # match
     matched_vegvesen_cycletourer, unmatched_vegvesen_cycletourer = match(vegvesen_forbud_osm, cycletourer_osm)
@@ -482,8 +483,8 @@ def main_index(vegvesen_forbud_osm, cycletourer_osm, osm_simple, filenames_to_li
 
     # 'Main' map page
     template_map = os.path.join(root, 'template', 'map.html')
-    output_map = os.path.join(root, 'output', 'map.html')
-    info += '<p class="comparison_p">%s</p>\n' % link_template_comparison.format(href="map.html",
+    output_map = os.path.join(root, 'output', 'mainMap.html')
+    info += '<p class="comparison_p">%s</p>\n' % link_template_comparison.format(href="mainMap.html",
                                                  title="",
                                                  text='MAP')
     

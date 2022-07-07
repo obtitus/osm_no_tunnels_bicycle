@@ -1,6 +1,6 @@
 def remove_empty_values(dct):
     """Remove all dictionary items where the value is '' or None."""
-    for key in dct.keys():
+    for key in list(dct.keys()):
         if dct[key] in ('', None):
             del dct[key]
 

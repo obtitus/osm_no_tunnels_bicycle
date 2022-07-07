@@ -6,9 +6,7 @@ import requests
 import gpxpy
 import geojson
 
-# hack
-sys.path.append('../../barnehagefakta_osm')
-from conflate_osm import file_util
+from utility_to_osm import file_util
 
 api = 'http://localhost:8989/route?'
 lat_lon_to_str = "{lat}%2C{lon}"
@@ -41,10 +39,10 @@ def request_route(start, end, vehicle='bike', weighting='fastest'):
 
 def track_equality(track1, track2):
     try:
-        for seg_ix in xrange(len(track1.segments)):
+        for seg_ix in range(len(track1.segments)):
             seg1 = track1.segments[seg_ix]
             seg2 = track2.segments[seg_ix]
-            for point_ix in xrange(len(seg1.points)):
+            for point_ix in range(len(seg1.points)):
                 point1 = seg1.points[point_ix]
                 point2 = seg2.points[point_ix]
                 # point2_reverse = seg2.points[-1-point_ix]
@@ -132,7 +130,8 @@ def main(output_filename = 'test.gpx',
         # start to end and end to start
         gpx = get_all(start, end)
         gpx = get_all(end, start, gpx)
-        gpx = remove_equal_start_stop(gpx) # removes any tracks with 2 point (or less) where start and endpoint is the same
+        # FIXME: no longer works 'GPXTrack' object has no attribute 'remove'
+        #gpx = remove_equal_start_stop(gpx) # removes any tracks with 2 point (or less) where start and endpoint is the same
 
         #if len(gpx.tracks) != 0:
         logger.info('writing %s tracks to %s', len(gpx.tracks), output_filename)
